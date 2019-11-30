@@ -1,8 +1,9 @@
-from BoardManager import BoardManager
+from TerminalBoard import TerminalBoard
 
 if __name__ == "__main__":
-    mb = BoardManager(4,4)
-    mb.set_tiles("12345678")
-    print(mb.get_tiles())
-    mb.set_tile(1,1, 'A')
-    print(mb.get_tiles())
+    b = TerminalBoard(4,4)
+    b.fill_random()
+    b.show()
+    print()  
+    b.set_tile(1,1, 'A')
+    b.show()
