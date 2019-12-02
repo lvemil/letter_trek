@@ -5,5 +5,6 @@ if __name__ == "__main__":
     b.fill_random()
     b.show()
     print()
-    b.set_word('EMIL')
+    b.set_word('JULIA')
     b.show()
+    print(b.solved('JULIA'))
