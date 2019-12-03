@@ -7,7 +7,7 @@ class Board:
     def __init__(self, rows = 1, cols = 1):
         self.__rows = rows
         self.__cols = cols
-        self.__tiles = "-" * (rows * cols)
+        self.__tiles = "_" * (rows * cols)
         
     @property
     def rows(self):
@@ -68,9 +68,10 @@ class Board:
 
     def fill_random(self):
         self.__tiles = ''
-        for i in range(self.__rows * self.__cols):
+        for _ in range(self.__rows * self.__cols - 1):
             letter  = random.choice(self.__letters)
             self.__tiles += letter
+        self.__tiles += '_'
 
     def fixed(self, r, c):
         return False
@@ -140,8 +141,26 @@ class Board:
                 return True
         
         return False
-                    
-        
+    
+    def swap_tiles(self, row, col, new_row, new_col):
+        t = self.get_tile(row, col)
+        self.set_tile(row, col, self.get_tile(new_row, new_col))
+        self.set_tile(new_row, new_col, t)
+
+    def mess(self, level):
+        # find empty tile
+        r, c = self.pos_to_axis(self.__tiles.find("_"))
+        prev_r, prev_c = -1, -1
+
+        # random moves
+        for _ in range(level) :
+            adjacent_rc = [self.moved_position(r, c, d) for d in [0, 1, 2, 3]]
+            adjacent_rc_inside = [(r, c) for (r, c) in adjacent_rc if self.inside(r, c) and (r, c) != (prev_r, prev_c)]
+            nr, nc = random.choice(adjacent_rc_inside)
+            self.swap_tiles(r, c, nr, nc)
+            prev_r, prev_c = r, c
+            r, c = nr, nc
+
 
 
 

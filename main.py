@@ -8,3 +8,5 @@ if __name__ == "__main__":
     b.set_word('JULIA')
     b.show()
     print(b.solved('JULIA'))
+    b.mess(4)
+    b.show()
