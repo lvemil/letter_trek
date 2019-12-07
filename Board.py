@@ -76,6 +76,9 @@ class Board:
     def fixed(self, r, c):
         return False
 
+    def empty(self, r, c):
+        return self.get_tile(r, c) == '_'
+
     def moved_position(self, r, c, d):
         dr = {0: -1, 1: 0, 2: 1, 3:  0}
         dc = {0:  0, 1: 1, 2: 0, 3: -1}
@@ -86,25 +89,29 @@ class Board:
         c = random.choice(range(self.__cols))
         return r, c
 
+    def find_path_at(self, word, row, col, depth, path):
+        adjacent_rc = [(r,c) for (r,c) in [self.moved_position(row, col, d) for d in [0, 1, 2, 3]] if self.inside(r,c) and not self.empty(r,c) and not (r,c) in path]
+        random.shuffle(adjacent_rc)
+        for r,c in adjacent_rc:
+            if(depth < len(word)-1):
+                return self.find_path_at(word, r,c, depth + 1, path + [(row,col)])
+            else:
+                # full word path found, so, set letters now
+                path.append((row, col))
+                for i in range(len(word)):
+                    self.set_tile(path[i][0], path[i][1], word[i])
+                return True
+        return False
+
     def set_word(self, word):
         # select start position
         r, c = self.get_random_postion()        
-        while self.fixed(r, c):
+        while self.fixed(r, c) or self.empty(r,c):
             r, c = self.get_random_postion()
         
-        # determine word letter positions
-        letter_positions = [(r,c)]
-        for _ in range(len(word)-1):            
-            while self.fixed(r, c) or (r,c) in letter_positions or not self.inside(r, c):
-                d = random.choice(range(4))
-                nr, nc = self.moved_position(r, c, d)
-                if not self.fixed(nr, nc) and (nr, nc) not in letter_positions and self.inside(nr, nc):
-                    r, c = nr, nc
-            letter_positions.append((r,c))
-
-        # set tiles
-        for i in range(len(word)):
-            self.set_tile(letter_positions[i][0],letter_positions[i][1], word[i])    
+        # set letters
+        self.find_path_at(word, r, c, 0, [])
+         
 
     def solved_at(self, word, row, col, depth = 0):
         #if depth > len(word):
@@ -122,7 +129,6 @@ class Board:
                     return self.solved_at(word, adjacent_rc_inside[i][0], adjacent_rc_inside[i][1], depth + 1)
 
         return False
-
 
     def solved(self, word):
         # get postions of first letter
