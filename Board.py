@@ -167,6 +167,14 @@ class Board:
             prev_r, prev_c = r, c
             r, c = nr, nc
 
+    def touch(self, row, col):
+        adjacent_rc = [self.moved_position(row, col, d) for d in [0, 1, 2, 3]]
+        adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
+        neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
+        if '_' in neighbors:
+            i = neighbors.index('_')
+            r, c = adjacent_rc_inside[i]
+            self.swap_tiles(row, col, r, c)
 
 
 

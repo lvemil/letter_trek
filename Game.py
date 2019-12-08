@@ -29,5 +29,19 @@ class Game:
     def next_challenge(self):
         self.__board = TerminalBoard(self.level_param("bh"),self.level_param("bw"))
         self.__board.fill_random()
-        word = self.random_word(self.level_param)
-        self.__board.set_word(word)
+        self.__word = self.random_word(self.level_param)
+        self.__board.set_word(self.__word)
+        self.__board.show()
+
+    def challenge_completed(self):
+        print('done!!')
+        if self.__challenge < self.level_param("c"):
+            self.next_challenge()
+        else:
+            self.next_level()
+
+    def touch(self, row, col):
+        self.__board.touch(row, col)
+        self.__board.show()
+        if self.__board.solved(self.__word):
+            self.challenge_completed()
