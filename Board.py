@@ -51,12 +51,6 @@ class Board:
         padding = self.__rows * self.__cols - len(tiles)
         self.__tiles = self.__tiles + ("-" * padding) 
 
-    def show(self):
-        for r in range(self.__rows):
-            for c in range(self.__cols):
-                self.draw_tile(r, c)
-            print("")
-
     def inside(self, row, col):
         return row >= 0 and col >= 0 and row < self.__rows and col < self.__cols
 
@@ -126,7 +120,8 @@ class Board:
                 if depth + 1 == len(word) - 1:
                     return True
                 else:
-                    return self.solved_at(word, adjacent_rc_inside[i][0], adjacent_rc_inside[i][1], depth + 1)
+                    nr, nc = adjacent_rc_inside[i]
+                    return self.solved_at(word, nr, nc, depth + 1)
 
         return False
 
@@ -143,7 +138,7 @@ class Board:
         
         # check solved in every found position
         for r,c in lp:
-            if self.solved_at(word, r, c):
+            if self.solved_at(word, r, c, 0):
                 return True
         
         return False
@@ -153,19 +148,23 @@ class Board:
         self.set_tile(row, col, self.get_tile(new_row, new_col))
         self.set_tile(new_row, new_col, t)
 
-    def mess(self, level):
+    def mess(self, level, word):
         # find empty tile
         r, c = self.pos_to_axis(self.__tiles.find("_"))
         prev_r, prev_c = -1, -1
 
         # random moves
-        for _ in range(level) :
+        moves = 0
+        solved = True
+        while moves < level or solved:
             adjacent_rc = [self.moved_position(r, c, d) for d in [0, 1, 2, 3]]
             adjacent_rc_inside = [(r, c) for (r, c) in adjacent_rc if self.inside(r, c) and (r, c) != (prev_r, prev_c)]
             nr, nc = random.choice(adjacent_rc_inside)
             self.swap_tiles(r, c, nr, nc)
             prev_r, prev_c = r, c
             r, c = nr, nc
+            moves += 1
+            solved = self.solved(word)
 
     def touch(self, row, col):
         adjacent_rc = [self.moved_position(row, col, d) for d in [0, 1, 2, 3]]

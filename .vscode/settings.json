@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/elima/anaconda3/envs/kivy_env/bin/python",
+    "python.pythonPath": "C:\\Users\\elima\\AppData\\Local\\Continuum\\anaconda3\\envs\\kivy_env\\python.exe",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true
 }
