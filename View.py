@@ -26,6 +26,10 @@ class View:
     def level(self, level):
         self.__level = level
 
+    @property
+    def challenge(self):
+        return self.__challenge
+
     @challenge.setter
     def challenge(self, challenge):
         self.__challenge = challenge

@@ -1,10 +1,9 @@
-from TerminalBoard import TerminalBoard
 from Game import Game
-from View import View
+from TerminalView import TerminalView
 import time
 
 if __name__ == "__main__":
-    v = View()
+    v = TerminalView()
     g = Game(v)
     g.start()
     i = ""

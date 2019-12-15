@@ -148,7 +148,12 @@ class Board:
         self.set_tile(row, col, self.get_tile(new_row, new_col))
         self.set_tile(new_row, new_col, t)
 
-    def mess(self, level, word):
+    def mess(self):
+        l = [c for c in self.__tiles]
+        random.shuffle(l)
+        self.__tiles = "".join(l)
+
+    def mess2(self, level, word):
         # find empty tile
         r, c = self.pos_to_axis(self.__tiles.find("_"))
         prev_r, prev_c = -1, -1

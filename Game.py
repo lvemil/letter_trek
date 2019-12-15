@@ -1,4 +1,4 @@
-from TerminalBoard import TerminalBoard
+from Board import Board
 import pickle
 import random
 
@@ -27,11 +27,12 @@ class Game:
 
     def next_challenge(self):
         self.__challenge += 1
-        self.__board = TerminalBoard(self.level_param("bh"),self.level_param("bw"))
+        self.__board = Board(self.level_param("bh"),self.level_param("bw"))
         self.__board.fill_random()
         self.__word = self.random_word(self.level_param("wl"))
         self.__board.set_word(self.__word)
-        self.__board.mess(4, self.__word)
+        #self.__board.mess(4, self.__word)
+        self.__board.mess()
 
         # refresh view
         self.__view.word = self.__word
@@ -48,6 +49,6 @@ class Game:
 
     def touch(self, row, col):
         self.__board.touch(row, col)
-        self.__view.update(self.__board, self.__word)
+        self.__view.refresh()
         if self.__board.solved(self.__word):
             self.challenge_completed()
