@@ -73,10 +73,11 @@ class Board:
     def empty(self, r, c):
         return self.get_tile(r, c) == '_'
 
-    def moved_position(self, r, c, d):
+    def adjacent_position(self, r, c, d):
         dr = {0: -1, 1: 0, 2: 1, 3:  0}
         dc = {0:  0, 1: 1, 2: 0, 3: -1}
         return r + dr[d], c + dc[d]
+
 
     def get_random_postion(self):
         r = random.choice(range(self.__rows))
@@ -84,7 +85,7 @@ class Board:
         return r, c
 
     def find_path_at(self, word, row, col, depth, path):
-        adjacent_rc = [(r,c) for (r,c) in [self.moved_position(row, col, d) for d in [0, 1, 2, 3]] if self.inside(r,c) and not self.empty(r,c) and not (r,c) in path]
+        adjacent_rc = [(r,c) for (r,c) in [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]] if self.inside(r,c) and not self.empty(r,c) and not (r,c) in path]
         random.shuffle(adjacent_rc)
         for r,c in adjacent_rc:
             if(depth < len(word)-1):
@@ -111,7 +112,7 @@ class Board:
         #if depth > len(word):
         #    return False
         
-        adjacent_rc = [self.moved_position(row, col, d) for d in [0, 1, 2, 3]]
+        adjacent_rc = [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]]
         adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
         neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
 
@@ -162,7 +163,7 @@ class Board:
         moves = 0
         solved = True
         while moves < level or solved:
-            adjacent_rc = [self.moved_position(r, c, d) for d in [0, 1, 2, 3]]
+            adjacent_rc = [self.adjacent_position(r, c, d) for d in [0, 1, 2, 3]]
             adjacent_rc_inside = [(r, c) for (r, c) in adjacent_rc if self.inside(r, c) and (r, c) != (prev_r, prev_c)]
             nr, nc = random.choice(adjacent_rc_inside)
             self.swap_tiles(r, c, nr, nc)
@@ -172,13 +173,18 @@ class Board:
             solved = self.solved(word)
 
     def touch(self, row, col):
-        adjacent_rc = [self.moved_position(row, col, d) for d in [0, 1, 2, 3]]
-        adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
-        neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
-        if '_' in neighbors:
-            i = neighbors.index('_')
-            r, c = adjacent_rc_inside[i]
-            self.swap_tiles(row, col, r, c)
+        for d in [0, 1, 2, 3]:
+            r, c = self.adjacent_position(row, col, d)
+            pos_list = [(row, col)]
+            while self.inside(r,c):
+                pos_list.append((r, c))
+                if self.get_tile(r, c) == '_':
+                    for i in range(len(pos_list) - 1, 0, -1):
+                        r1, c1 = pos_list[i]
+                        r2, c2 = pos_list[i-1]
+                        self.swap_tiles(r1,c1, r2, c2)
+                    return
+                r, c = self.adjacent_position(r, c, d)
 
 
 
