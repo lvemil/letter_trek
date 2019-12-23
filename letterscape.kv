@@ -1,0 +1,37 @@
+#:kivy 1.11.1
+
+<LetterScapeGame>:
+    BoxLayout:
+        orientation:'vertical'
+        size: root.size
+        pos: root.pos
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: 1, 0.2
+            Label:
+                text: 'Level: ' + str(root.level)
+                font_size: 35
+            Label:
+                text: 'Challenge: ' + str(root.challenge)
+                font_size: 35 
+        Label:
+            size_hint: 1, 0.2
+            text: str(root.word)
+            font_size: 70 
+        GridLayout:
+            id: glTiles
+            spacing: 10,10
+
+<TileWidget>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, .9
+        Line:
+            width: 2.
+            rectangle: (self.x, self.y, self.width, self.height)
+    Label:
+        center: root.center
+        text: root.letter
+        font_size: 70 
+
+

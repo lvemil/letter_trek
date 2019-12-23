@@ -1,0 +1,3 @@
+title=LetterScape
+author=Emil Lima
+orientation=portrait
