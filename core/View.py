@@ -1,4 +1,4 @@
-from Board import Board
+from core.Board import Board
 
 class View:
 

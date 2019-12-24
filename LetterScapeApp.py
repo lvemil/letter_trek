@@ -4,17 +4,17 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 
-from LetterScapeGame import LetterScapeGame
-from TileWidget import TileWidget
+from widgets.LetterScapeGameWidget import LetterScapeGameWidget
+from widgets.TileWidget import TileWidget
 
-from GameEngine import GameEngine
-from View import View
+from core.GameEngine import GameEngine
+from core.View import View
 
 class LetterScapeApp(App):
 
 
     def build(self):
-        rw = LetterScapeGame()
+        rw = LetterScapeGameWidget()
         th = rw.children[0].children[0]
 
         self.__root_widget = rw

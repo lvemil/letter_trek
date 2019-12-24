@@ -1,4 +1,4 @@
-from View import View
+from core.View import View
 
 class TerminalView(View):
     def draw_tile(self, letter):

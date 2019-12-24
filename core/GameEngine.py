@@ -1,4 +1,4 @@
-from Board import Board
+from core.Board import Board
 import pickle
 import random
 
@@ -24,6 +24,9 @@ class GameEngine:
         with open('words_en.pkl','rb') as f:
             words = pickle.load(f)
             return random.choice([w for w in words if len(w) == word_len])
+
+    def current_word(self):
+        return self.__word 
 
     def next_challenge(self):
         self.__challenge += 1
