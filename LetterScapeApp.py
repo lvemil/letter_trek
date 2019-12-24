@@ -3,6 +3,7 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.graphics import Color
 
 from widgets.LetterScapeGameWidget import LetterScapeGameWidget
 from widgets.TileWidget import TileWidget
@@ -51,6 +52,7 @@ class LetterScapeApp(App):
             t.row = row
             t.col = col
             t.game_engine = self.__game_engine
+            t.c = [0,1,1,.9] if t.letter_in_word() else [1,1,1,.9]
             self.__tiles_holder.add_widget(t)
 
 class KivyView(View):
