@@ -40,7 +40,7 @@ class GameEngine:
         self.__word = self.random_word(self.level_param("wl"))
         self.__board.set_word(self.__word)
         #self.__board.mess(4, self.__word)
-        self.__board.mess()
+        self.__board.mess(self.__word)
 
         # refresh view
         self.__view.word = self.__word
