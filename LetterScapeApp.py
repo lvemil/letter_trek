@@ -9,7 +9,6 @@ from widgets.LetterScapeGameWidget import LetterScapeGameWidget
 from widgets.TileWidget import TileWidget
 
 from core.GameEngine import GameEngine
-from core.View import View
 
 class LetterScapeApp(App):
 
@@ -21,13 +20,25 @@ class LetterScapeApp(App):
         self.__root_widget = rw
         self.__tiles_holder = th
 
-        self.__game_engine = GameEngine(KivyView(self))
+        self.__game_engine = GameEngine()
+
+        self.__game_engine.on_board_reset += self.on_board_reset
+
         self.__game_engine.start()
 
-        #for _ in range(9):
-        #    g.children[0].children[0].add_widget(Button())
         return  rw
-        
+    
+    def on_board_reset(self, sender, earg):
+        self.set_level(sender.level)
+        self.set_challenge(sender.challenge)
+        self.set_word(sender.word)
+
+        self.clear_tiles()
+        self.set_tiles_cols(sender.board.cols)
+        for r in range(sender.board.rows):
+            for c in range(sender.board.cols):
+                self.add_tile(sender.board.get_tile(r, c), r, c)        
+
     def set_level(self, level):
         self.__root_widget.level = level
 
@@ -55,19 +66,3 @@ class LetterScapeApp(App):
             t.c = [0,1,1,.9] if t.letter_in_word() else [1,1,1,.9]
             self.__tiles_holder.add_widget(t)
 
-class KivyView(View):
-    
-    def __init__(self, app: LetterScapeApp):
-        self.__app = app
-
-    def refresh(self):
-        self.__app.set_level(self.level)
-        self.__app.set_challenge(self.challenge)
-        self.__app.set_word(self.word)
-
-        self.__app.clear_tiles()
-        self.__app.set_tiles_cols(self.board.cols)
-        for r in range(self.board.rows):
-            for c in range(self.board.cols):
-                self.__app.add_tile(self.board.get_tile(r, c), r, c)
-                

@@ -1,4 +1,5 @@
 from core.Board import Board
+from core.Event import Event
 import pickle
 import random
 
@@ -10,9 +11,41 @@ class GameEngine:
         4:{"c":3, "bh":4, "bw":4, "wl":5}
     }
 
-    def __init__(self, view):
-        self.__view = view
+    def __init__(self):
+        self.on_board_reset = Event()
  
+    @property
+    def board(self):
+        return self.__board
+    
+    @board.setter
+    def board(self, board):
+        self.__board = board
+
+    @property
+    def word(self):
+        return self.__word
+    
+    @word.setter
+    def word(self, word):
+        self.__word = word
+
+    @property
+    def level(self):
+        return self.__level
+    
+    @level.setter
+    def level(self, level):
+        self.__level = level
+
+    @property
+    def challenge(self):
+        return self.__challenge
+
+    @challenge.setter
+    def challenge(self, challenge):
+        self.__challenge = challenge
+
     def start(self):
         self.__level = 0
         self.next_level()
@@ -33,6 +66,7 @@ class GameEngine:
     def current_word(self):
         return self.__word 
 
+
     def next_challenge(self):
         self.__challenge += 1
         self.__board = Board(self.level_param("bh"),self.level_param("bw"))
@@ -42,12 +76,15 @@ class GameEngine:
         #self.__board.mess(4, self.__word)
         self.__board.mess(self.__word)
 
+        # fire on_board_changed event
+        self.on_board_reset(self)
+
         # refresh view
-        self.__view.word = self.__word
-        self.__view.board = self.__board
-        self.__view.challenge = self.__challenge
-        self.__view.level = self.__level
-        self.__view.refresh()
+        #self.__view.word = self.__word
+        #self.__view.board = self.__board
+        #self.__view.challenge = self.__challenge
+        #self.__view.level = self.__level
+        #self.__view.refresh()
 
     def challenge_completed(self):
         if self.__challenge < self.level_param("c"):
@@ -57,6 +94,8 @@ class GameEngine:
 
     def touch(self, row, col):
         self.__board.touch(row, col)
-        self.__view.refresh()
+        
+        self.on_board_reset(self)
+        
         if self.__board.solved(self.__word):
             self.challenge_completed()
