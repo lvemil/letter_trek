@@ -32,21 +32,27 @@ class LetterScapeApp(App):
 
         return  rw
     
+    def add_tiles(self):
+        self.__tiles_holder.clear_widgets()
+        self.set_tiles_cols(self.__game_engine.board.cols)
+        for r in range(self.__game_engine.board.rows):
+            for c in range(self.__game_engine.board.cols):
+                self.add_tile(self.__game_engine.board.get_tile(r, c), r, c)  
+
     def on_board_reset(self, sender):
         #time.sleep(2)
         self.set_level(sender.level)
         self.set_challenge(sender.challenge)
         self.set_word(sender.word)
-
-        self.clear_tiles()
-        self.set_tiles_cols(sender.board.cols)
-        for r in range(sender.board.rows):
-            for c in range(sender.board.cols):
-                self.add_tile(sender.board.get_tile(r, c), r, c)        
+        
+        if len(self.get_all_tile_widgets()) > 0:
+            self.clear_tiles()
+        else:
+            self.add_tiles()
 
     def on_tile_moved(self, sender, row, col, direction, new_row, new_col):
         # get touched tile widget
-        tile = self.get_tile_widget(row, col)[0]
+        tile = self.get_tile_widget(row, col)
 
         # calculate new position    
         if direction == 0: # up
@@ -72,12 +78,14 @@ class LetterScapeApp(App):
         anim = Animation(pos=(new_x, new_y), d = 0.2, t = "out_elastic")
         
         # run animation
-        #anim.on_complete = lambda: self.on_board_reset(sender)
         anim.start(tile)
 
     def get_tile_widget(self, row, col):
-        tile = [w for w in self.__tiles_holder.children if type(w) is TileWidget and w.row == row and w.col == col]
+        tile = [w for w in self.__tiles_holder.children if type(w) is TileWidget and w.row == row and w.col == col][0]
         return tile
+
+    def get_all_tile_widgets(self):
+        return [w for w in self.__tiles_holder.children if type(w) is TileWidget]
 
     def set_level(self, level):
         self.__root_widget.level = level
@@ -88,8 +96,19 @@ class LetterScapeApp(App):
     def set_word(self, word):
         self.__root_widget.word = word
 
+    def remove_tile_widget(self, animation, widget):
+        self.__tiles_holder.remove_widget(widget)
+        if len(self.get_all_tile_widgets()) == 0:
+            self.add_tiles()
+
     def clear_tiles(self):
-        self.__tiles_holder.clear_widgets()
+        # get all tile widgets
+        all_tiles = self.get_all_tile_widgets()
+        # animate
+        anim = Animation(opacity=0, d = 0.5, t = "linear")
+        anim.bind(on_complete = self.remove_tile_widget)
+        for tile in all_tiles:
+            anim.start(tile)
 
     def set_tiles_cols(self, cols):
         self.__tiles_holder.cols = cols

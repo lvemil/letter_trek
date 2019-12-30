@@ -1,6 +1,6 @@
 #:kivy 1.11.1
 
-<LetterScapeGame>:
+<LetterScapeGameWidget>:
     BoxLayout:
         orientation:'vertical'
         size: root.size
@@ -25,7 +25,7 @@
 <TileWidget>:
     canvas:
         Color:
-            rgba: 1, 1, 1, .9
+            rgba: self.c
         Line:
             width: 2.
             rectangle: (self.x, self.y, self.width, self.height)
