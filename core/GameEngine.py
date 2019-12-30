@@ -13,6 +13,7 @@ class GameEngine:
 
     def __init__(self):
         self.on_board_reset = Event()
+        self.on_tile_moved = Event()
  
     @property
     def board(self):
@@ -69,11 +70,15 @@ class GameEngine:
 
     def next_challenge(self):
         self.__challenge += 1
+        
         self.__board = Board(self.level_param("bh"),self.level_param("bw"))
+        self.__board.on_tile_moved += self.__on_board_tile_moved
         self.__board.fill_random()
+        
         self.__word = self.random_word(self.level_param("wl"))
+        
         self.__board.set_word(self.__word)
-        #self.__board.mess(4, self.__word)
+        
         self.__board.mess(self.__word)
 
         # fire on_board_changed event
@@ -93,9 +98,11 @@ class GameEngine:
             self.next_level()
 
     def touch(self, row, col):
-        self.__board.touch(row, col)
-        
-        self.on_board_reset(self)
-        
-        if self.__board.solved(self.__word):
+        tile_moved = self.__board.touch(row, col)
+        #self.on_board_reset(self)
+
+        if tile_moved and self.__board.solved(self.__word):            
             self.challenge_completed()
+
+    def __on_board_tile_moved(self, sender, row, col, direction, new_row, new_col):
+        self.on_tile_moved(self, row, col, direction, new_row, new_col)

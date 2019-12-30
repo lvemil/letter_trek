@@ -1,4 +1,5 @@
 import random
+from core.Event import Event
 
 class Board:
     
@@ -8,6 +9,7 @@ class Board:
         self.__rows = rows
         self.__cols = cols
         self.__tiles = "_" * (rows * cols)
+        self.on_tile_moved = Event()
         
     @property
     def rows(self):
@@ -77,7 +79,6 @@ class Board:
         dr = {0: -1, 1: 0, 2: 1, 3:  0}
         dc = {0:  0, 1: 1, 2: 0, 3: -1}
         return r + dr[d], c + dc[d]
-
 
     def get_random_postion(self):
         r = random.choice(range(self.__rows))
@@ -184,8 +185,10 @@ class Board:
                         r1, c1 = pos_list[i]
                         r2, c2 = pos_list[i-1]
                         self.swap_tiles(r1,c1, r2, c2)
-                    return
+                        self.on_tile_moved(self, r2,c2, d, r1, c1)
+                    return True
                 r, c = self.adjacent_position(r, c, d)
+        return False
 
 
 

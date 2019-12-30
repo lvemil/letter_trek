@@ -11,9 +11,9 @@ class Event():
         self.handlers.remove(handler)
         return self
     
-    def fire(self, sender, earg=None):
+    def fire(self, sender, *eargs):
         for handler in self.handlers:
-            handler(sender, earg)
+            handler(sender, *eargs)
     
     __iadd__ = add
     __isub__ = remove
