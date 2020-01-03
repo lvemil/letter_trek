@@ -1,4 +1,5 @@
-import os
+from kivy.config import Config 
+
 import kivy
 
 from LetterScapeApp import LetterScapeApp

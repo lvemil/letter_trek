@@ -40,6 +40,10 @@ class GameEngine:
         self.__level = level
 
     @property
+    def level_challenges(self):
+        return self.level_param("c")
+
+    @property
     def challenge(self):
         return self.__challenge
 
@@ -83,13 +87,6 @@ class GameEngine:
 
         # fire on_board_changed event
         self.on_board_reset(self)
-
-        # refresh view
-        #self.__view.word = self.__word
-        #self.__view.board = self.__board
-        #self.__view.challenge = self.__challenge
-        #self.__view.level = self.__level
-        #self.__view.refresh()
 
     def challenge_completed(self):
         if self.__challenge < self.level_param("c"):

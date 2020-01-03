@@ -1,12 +1,13 @@
 import time
 
-import kivy
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color
 from kivy.animation import Animation
+from kivy.core.window import Window
+from kivy.clock import Clock
 
 from widgets.LetterScapeGameWidget import LetterScapeGameWidget
 from widgets.TileWidget import TileWidget
@@ -18,7 +19,7 @@ class LetterScapeApp(App):
 
     def build(self):
         rw = LetterScapeGameWidget()
-        th = rw.children[0].children[0]
+        th = rw.children[0].children[1]
 
         self.__root_widget = rw
         self.__tiles_holder = th
@@ -28,10 +29,17 @@ class LetterScapeApp(App):
         self.__game_engine.on_board_reset += self.on_board_reset
         self.__game_engine.on_tile_moved += self.on_tile_moved
 
+        Clock.schedule_interval(self.timer_interval, 1)
+
         self.__game_engine.start()
 
         return  rw
     
+    def timer_interval(self, dt):
+        if self.__first_move == False:
+            self.__root_widget.timer += 1
+        return True
+
     def add_tiles(self):
         self.__tiles_holder.clear_widgets()
         self.set_tiles_cols(self.__game_engine.board.cols)
@@ -44,11 +52,14 @@ class LetterScapeApp(App):
         self.set_level(sender.level)
         self.set_challenge(sender.challenge)
         self.set_word(sender.word)
+        self.__root_widget.timer = 0
         
         if len(self.get_all_tile_widgets()) > 0:
             self.clear_tiles()
         else:
             self.add_tiles()
+
+        self.__first_move = True
 
     def on_tile_moved(self, sender, row, col, direction, new_row, new_col):
         # get touched tile widget
@@ -75,10 +86,12 @@ class LetterScapeApp(App):
         tile.col = new_col
 
         # create animation
-        anim = Animation(pos=(new_x, new_y), d = 0.2, t = "out_elastic")
+        anim = Animation(pos=(new_x, new_y), d = 0.1, t = "in_out_quart")
         
         # run animation
         anim.start(tile)
+
+        self.__first_move = False
 
     def get_tile_widget(self, row, col):
         tile = [w for w in self.__tiles_holder.children if type(w) is TileWidget and w.row == row and w.col == col][0]
@@ -92,6 +105,7 @@ class LetterScapeApp(App):
 
     def set_challenge(self, challenge):
         self.__root_widget.challenge = challenge
+        self.__root_widget.level_challenges = self.__game_engine.level_challenges
 
     def set_word(self, word):
         self.__root_widget.word = word
@@ -117,11 +131,17 @@ class LetterScapeApp(App):
         if letter == "_":
             self.__tiles_holder.add_widget(Label())
         else:
+            
             t = TileWidget()
             t.letter = letter
             t.row = row
             t.col = col
             t.game_engine = self.__game_engine
-            t.c = [0,1,1,.9] if t.letter_in_word() else [1,1,1,.9]
+            t.c = [0.973, 0.463, 0.160, 1] if t.letter_in_word() else [0.176, 0.804, 0.796, 1]
+
+            win_w = Window.size[0]
+            t.size_hint_y = None
+            t.height = win_w / self.__game_engine.board.rows
+
             self.__tiles_holder.add_widget(t)
 

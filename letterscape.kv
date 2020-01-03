@@ -1,26 +1,70 @@
 #:kivy 1.11.1
 
 <LetterScapeGameWidget>:
+    canvas.before:
+        Color:
+            rgba: 0.110, 0.129, 0.188, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     BoxLayout:
         orientation:'vertical'
         size: root.size
         pos: root.pos
         BoxLayout:
+            size_hint: 1, 0.1
+        BoxLayout:
             orientation:'horizontal'
             size_hint: 1, 0.2
             Label:
-                text: 'Level: ' + str(root.level)
-                font_size: 35
+                canvas.before:
+                    Color:
+                        rgba: 0.176, 0.804, 0.796, 1
+                    Line:
+                        width: 2.
+                        circle: (self.center_x, self.center_y, (self.height-10)/2)
+                color: [0.176, 0.804, 0.796, 1]
+                text: str(root.level)
+                font_size: 50
             Label:
-                text: 'Challenge: ' + str(root.challenge)
-                font_size: 35 
+                canvas.before:
+                    Color:
+                        rgba: 0.176, 0.804, 0.796, 1
+                    Line:
+                        width: 1.
+                        circle: (self.center_x, self.center_y, (self.height-10)/2)
+                    Line:
+                        width: 4.
+                        cap: 'square'
+                        circle: (self.center_x, self.center_y, (self.height-10)/2, 0, 360 * ((root.challenge-1) / (root.level_challenges if root.level_challenges > 0 else 1)))
+                color: [0.176, 0.804, 0.796, 1]
+                text: str(root.challenge)
+                font_size: 50 
+            Label:
+                canvas.before:
+                    Color:
+                        rgba: 0.176, 0.804, 0.796, 1
+                    Line:
+                        width: 1
+                        circle: (self.center_x, self.center_y, (self.height-10)/2)
+                    Line:
+                        width: 4.
+                        cap: 'square'
+                        circle: (self.center_x, self.center_y, (self.height-10)/2, (30 * (root.timer % 12)), (30 * (root.timer % 12)) + 30)
+                color: [0.176, 0.804, 0.796, 1]
+                text: str(root.timer)
+                font_size: 50
         Label:
+            color: [0.176, 0.804, 0.796, 1]
             size_hint: 1, 0.2
             text: str(root.word)
-            font_size: 70 
+            font_size: 70   
         GridLayout:
             id: glTiles
             spacing: 10,10
+        BoxLayout:
+            size_hint: 1, 0.20
+        
 
 <TileWidget>:
     canvas:
@@ -28,8 +72,10 @@
             rgba: self.c
         Line:
             width: 2.
-            rectangle: (self.x, self.y, self.width, self.height)
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
+            joint: 'round'
     Label:
+        color: root.c
         center: root.center
         text: root.letter
         font_size: 70 
