@@ -99,7 +99,7 @@ class Board:
                 return True
         return False
 
-    def set_word(self, word):
+    def set_word2(self, word):
         # select start position
         r, c = self.get_random_postion()        
         while self.fixed(r, c) or self.empty(r,c):
@@ -108,7 +108,18 @@ class Board:
         # set letters
         self.find_path_at(word, r, c, 0, [])
          
-
+    def set_word(self, word):
+        positions = [i for i in range(len(self.__tiles))]
+        positions_r_c = [self.pos_to_axis(i) for i in positions]
+        tile_positions = [(r,c) 
+            for (r,c) in positions_r_c
+            if self.fixed(r,c) == False 
+                and self.empty(r,c) == False]
+        random_positions = random.sample(tile_positions, k=len(word))
+        for i in range(len(word)):
+            r,c = random_positions[i]
+            self.set_tile(r, c, word[i])
+ 
     def solved_at(self, word, row, col, depth = 0):
         #if depth > len(word):
         #    return False
@@ -123,7 +134,9 @@ class Board:
                     return True
                 else:
                     nr, nc = adjacent_rc_inside[i]
-                    return self.solved_at(word, nr, nc, depth + 1)
+                    res = self.solved_at(word, nr, nc, depth + 1)
+                    if res == True:
+                        return True
 
         return False
 
@@ -150,11 +163,15 @@ class Board:
         self.set_tile(row, col, self.get_tile(new_row, new_col))
         self.set_tile(new_row, new_col, t)
 
+    def __mess(self):
+        l = [c for c in self.__tiles]
+        random.shuffle(l)
+        self.__tiles = "".join(l)
+
     def mess(self, word):
+        self.__mess()
         while self.solved(word):
-            l = [c for c in self.__tiles]
-            random.shuffle(l)
-            self.__tiles = "".join(l)
+            self.__mess()
 
     def mess2(self, level, word):
         # find empty tile
