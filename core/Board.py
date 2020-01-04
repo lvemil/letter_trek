@@ -85,29 +85,6 @@ class Board:
         c = random.choice(range(self.__cols))
         return r, c
 
-    def find_path_at(self, word, row, col, depth, path):
-        adjacent_rc = [(r,c) for (r,c) in [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]] if self.inside(r,c) and not self.empty(r,c) and not (r,c) in path]
-        random.shuffle(adjacent_rc)
-        for r,c in adjacent_rc:
-            if(depth < len(word)-1):
-                return self.find_path_at(word, r,c, depth + 1, path + [(row,col)])
-            else:
-                # full word path found, so, set letters now
-                path.append((row, col))
-                for i in range(len(word)):
-                    self.set_tile(path[i][0], path[i][1], word[i])
-                return True
-        return False
-
-    def set_word2(self, word):
-        # select start position
-        r, c = self.get_random_postion()        
-        while self.fixed(r, c) or self.empty(r,c):
-            r, c = self.get_random_postion()
-        
-        # set letters
-        self.find_path_at(word, r, c, 0, [])
-         
     def set_word(self, word):
         positions = [i for i in range(len(self.__tiles))]
         positions_r_c = [self.pos_to_axis(i) for i in positions]
@@ -121,9 +98,6 @@ class Board:
             self.set_tile(r, c, word[i])
  
     def solved_at(self, word, row, col, depth = 0):
-        #if depth > len(word):
-        #    return False
-        
         adjacent_rc = [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]]
         adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
         neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
@@ -172,24 +146,6 @@ class Board:
         self.__mess()
         while self.solved(word):
             self.__mess()
-
-    def mess2(self, level, word):
-        # find empty tile
-        r, c = self.pos_to_axis(self.__tiles.find("_"))
-        prev_r, prev_c = -1, -1
-
-        # random moves
-        moves = 0
-        solved = True
-        while moves < level or solved:
-            adjacent_rc = [self.adjacent_position(r, c, d) for d in [0, 1, 2, 3]]
-            adjacent_rc_inside = [(r, c) for (r, c) in adjacent_rc if self.inside(r, c) and (r, c) != (prev_r, prev_c)]
-            nr, nc = random.choice(adjacent_rc_inside)
-            self.swap_tiles(r, c, nr, nc)
-            prev_r, prev_c = r, c
-            r, c = nr, nc
-            moves += 1
-            solved = self.solved(word)
 
     def touch(self, row, col):
         for d in [0, 1, 2, 3]:
