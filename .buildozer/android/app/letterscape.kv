@@ -1,4 +1,44 @@
 #:kivy 1.11.1
+#: import StartButtonWidget widgets 
+#: import Window kivy.core.window 
+
+<HomeScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.110, 0.129, 0.188, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation:"vertical"
+        FloatLayout:
+            Label:
+                text: "LetterScape"
+                size_hint: .5, .1
+                pos_hint: {"x":.25,"top":.85}
+                font_size: 70
+            Label:
+                text: "Move tiles, join letters, build words"
+                size_hint: .5, .1
+                pos_hint: {"x":.25,"top":.75}
+            StartButtonWidget:
+                screen: root
+                text: "Start"
+                size_hint: .5, .1
+                pos_hint: {"x":.25,"top":.6}
+            
+<StartButtonWidget>:
+    Label:
+        canvas:
+            Color:
+                rgba: [0.176, 0.804, 0.796, 1]
+            Line:
+                width: 2.
+                rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
+                joint: 'round'
+        text: root.text  
+        size: root.size
+        pos: root.pos
 
 <LetterScapeGameWidget>:
     canvas.before:
@@ -21,7 +61,7 @@
                     Color:
                         rgba: 0.176, 0.804, 0.796, 1
                     Line:
-                        width: 2.
+                        width: dp(1)
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.level)
@@ -31,10 +71,10 @@
                     Color:
                         rgba: 0.176, 0.804, 0.796, 1
                     Line:
-                        width: 1.
+                        width: dp(1)
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
                     Line:
-                        width: 4.
+                        width: dp(3)
                         cap: 'square'
                         circle: (self.center_x, self.center_y, (self.height-10)/2, 0, 360 * ((root.challenge-1) / (root.level_challenges if root.level_challenges > 0 else 1)))
                 color: [0.176, 0.804, 0.796, 1]
@@ -45,10 +85,10 @@
                     Color:
                         rgba: 0.176, 0.804, 0.796, 1
                     Line:
-                        width: 1
+                        width: dp(1)
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
                     Line:
-                        width: 4.
+                        width: dp(3)
                         cap: 'square'
                         circle: (self.center_x, self.center_y, (self.height-10)/2, (30 * (root.timer % 12)), (30 * (root.timer % 12)) + 30)
                 color: [0.176, 0.804, 0.796, 1]
@@ -61,9 +101,10 @@
             font_size: 70   
         GridLayout:
             id: glTiles
-            spacing: 10,10
+            spacing: dp(5),dp(5)
+            padding: dp(10)
         BoxLayout:
-            size_hint: 1, 0.20
+            size_hint: 1, 0.30
         
 
 <TileWidget>:
@@ -71,7 +112,7 @@
         Color:
             rgba: self.c
         Line:
-            width: 2.
+            width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
     Label:
