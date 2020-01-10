@@ -4,6 +4,9 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 
 class StartButtonWidget(Label):
+    def __init__(self, **kwargs):
+        super(StartButtonWidget, self).__init__(**kwargs)
+        
     screen = ObjectProperty()
 
     def on_touch_up(self, touch):
