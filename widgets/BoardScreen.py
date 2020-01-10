@@ -139,7 +139,7 @@ class BoardScreen(Screen):
             t.col = col
             t.game_engine = self.__game_engine
             t.c = [0.973, 0.463, 0.160, 1] if t.letter_in_word() else [0.176, 0.804, 0.796, 1]
-
+            t.font_name = "fonts/zekton.ttf"
             win_w = Window.size[0] - (dp(10) * 2)
             t.size_hint_y = None
             t.height = win_w / self.__game_engine.board.rows

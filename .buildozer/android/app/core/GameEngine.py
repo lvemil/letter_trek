@@ -5,10 +5,11 @@ import random
 
 class GameEngine:
     __level_def = {
-        1:{"c":3, "bh":3, "bw":3, "wl":2},
+        1:{"c":2, "bh":3, "bw":3, "wl":2},
         2:{"c":3, "bh":3, "bw":3, "wl":3},
-        3:{"c":3, "bh":3, "bw":3, "wl":4}, 
-        4:{"c":3, "bh":4, "bw":4, "wl":5}
+        3:{"c":3, "bh":3, "bw":3, "wl":4},
+        4:{"c":3, "bh":3, "bw":3, "wl":5}, 
+        5:{"c":3, "bh":4, "bw":4, "wl":5}
     }
 
     def __init__(self):

@@ -9,23 +9,19 @@
         Rectangle:
             pos: self.pos
             size: self.size
-    BoxLayout:
-        orientation:"vertical"
-        FloatLayout:
-            Label:
-                text: "LetterScape"
-                size_hint: .5, .1
-                pos_hint: {"x":.25,"top":.85}
-                font_size: 70
-            Label:
-                text: "Move tiles, join letters, build words"
-                size_hint: .5, .1
-                pos_hint: {"x":.25,"top":.75}
-            StartButtonWidget:
-                screen: root
-                text: "Start"
-                size_hint: .5, .1
-                pos_hint: {"x":.25,"top":.6}
+    FloatLayout:
+        Label:
+            font_name: "fonts/zekton.ttf"
+            text: "LetterQuest"
+            size_hint: .5, .1
+            pos_hint: {"x":.25,"top":.75}
+            font_size: 70
+        StartButtonWidget:
+            font_name: "fonts/zekton.ttf"
+            screen: root
+            text: "Start"
+            size_hint: .5, .1
+            pos_hint: {"x":.25,"top":.5}
             
 <StartButtonWidget>:
     Label:
@@ -33,9 +29,10 @@
             Color:
                 rgba: [0.176, 0.804, 0.796, 1]
             Line:
-                width: 2.
+                width: dp(2)
                 rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
                 joint: 'round'
+        font_name: "fonts/zekton.ttf"
         text: root.text  
         size: root.size
         pos: root.pos
@@ -63,6 +60,7 @@
                     Line:
                         width: dp(1)
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
+                font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.level)
                 font_size: 50
@@ -75,8 +73,9 @@
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
                     Line:
                         width: dp(3)
-                        cap: 'square'
+                        cap: 'round'
                         circle: (self.center_x, self.center_y, (self.height-10)/2, 0, 360 * ((root.challenge-1) / (root.level_challenges if root.level_challenges > 0 else 1)))
+                font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.challenge)
                 font_size: 50 
@@ -89,12 +88,14 @@
                         circle: (self.center_x, self.center_y, (self.height-10)/2)
                     Line:
                         width: dp(3)
-                        cap: 'square'
+                        cap: 'round'
                         circle: (self.center_x, self.center_y, (self.height-10)/2, (30 * (root.timer % 12)), (30 * (root.timer % 12)) + 30)
+                font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.timer)
                 font_size: 50
         Label:
+            font_name: "fonts/zekton.ttf"
             color: [0.176, 0.804, 0.796, 1]
             size_hint: 1, 0.2
             text: str(root.word)
@@ -116,6 +117,7 @@
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
     Label:
+        font_name: "fonts/zekton.ttf"
         color: root.c
         center: root.center
         text: root.letter

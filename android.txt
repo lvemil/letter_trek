@@ -1,3 +1,3 @@
-title=LetterScape
+title=LetterQuest
 author=Emil Lima
 orientation=portrait
