@@ -22,7 +22,28 @@
             text: "Start"
             size_hint: .5, .1
             pos_hint: {"x":.25,"top":.5}
-            
+
+<ChallengeCompletedScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.110, 0.129, 0.188, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        Label:
+            font_name: "fonts/zekton.ttf"
+            text: "Challenge \ncompleted!"
+            size_hint: .5, .1
+            pos_hint: {"x":.25,"top":.75}
+            font_size: 70
+        StartButtonWidget:
+            font_name: "fonts/zekton.ttf"
+            screen: root
+            text: "Continue"
+            size_hint: .5, .1
+            pos_hint: {"x":.25,"top":.5}
+
 <StartButtonWidget>:
     Label:
         canvas:
