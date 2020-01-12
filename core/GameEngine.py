@@ -8,13 +8,14 @@ class GameEngine:
         1:{"c":2, "bh":3, "bw":3, "wl":2},
         2:{"c":3, "bh":3, "bw":3, "wl":3},
         3:{"c":3, "bh":3, "bw":3, "wl":4},
-        4:{"c":3, "bh":3, "bw":3, "wl":5}, 
+        4:{"c":3, "bh":4, "bw":4, "wl":5}, 
         5:{"c":3, "bh":4, "bw":4, "wl":5}
     }
 
     def __init__(self):
         self.on_board_reset = Event()
         self.on_tile_moved = Event()
+        self.on_challenge_completed = Event()
  
     @property
     def board(self):
@@ -74,6 +75,10 @@ class GameEngine:
 
 
     def next_challenge(self):
+        if self.__challenge >= self.level_param("c"):            
+            self.__level += 1
+            self.__challenge = 0
+        
         self.__challenge += 1
         
         self.__board = Board(self.level_param("bh"),self.level_param("bw"))
@@ -89,18 +94,11 @@ class GameEngine:
         # fire on_board_changed event
         self.on_board_reset(self)
 
-    def challenge_completed(self):
-        if self.__challenge < self.level_param("c"):
-            self.next_challenge()
-        else:
-            self.next_level()
+    def check_challenge_completed(self):
+        return self.__board.solved(self.__word)
 
     def touch(self, row, col):
-        tile_moved = self.__board.touch(row, col)
-        #self.on_board_reset(self)
-
-        if tile_moved and self.__board.solved(self.__word):            
-            self.challenge_completed()
+        return self.__board.touch(row, col)
 
     def __on_board_tile_moved(self, sender, row, col, direction, new_row, new_col):
         self.on_tile_moved(self, row, col, direction, new_row, new_col)

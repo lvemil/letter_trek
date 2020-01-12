@@ -1,11 +1,9 @@
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.metrics import *
-from kivy.app import App
 
 from widgets.TileWidget import TileWidget
 
-class HomeScreen(Screen):
+
+class ChallengeCompletedScreen(Screen):
     def __init__(self, **kwargs):
-        super(HomeScreen, self).__init__(**kwargs)
-    
-    
+        super(ChallengeCompletedScreen, self).__init__(**kwargs)
