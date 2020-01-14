@@ -22,7 +22,11 @@ class BoardScreen(Screen):
         super(BoardScreen, self).__init__(**kwargs)
         #self.on_enter = self.do_on_enter
         self.on_pre_enter = self.do_on_enter
-       
+
+    def tile_on_touch_up(self, instance, touch):
+        if instance.collide_point(*touch.pos):
+            self.__game_engine.touch(instance.row, instance.col)    
+
     def do_on_enter(self):
         
         if App.get_running_app().status == "starting": # initialize game board
@@ -160,5 +164,6 @@ class BoardScreen(Screen):
             win_w = Window.size[0] - (dp(10) * 2)
             t.size_hint_y = None
             t.height = win_w / self.__game_engine.board.rows
+            t.bind(on_touch_up = self.tile_on_touch_up)
 
             self.__tiles_holder.add_widget(t)

@@ -3,6 +3,7 @@
 #: import Window kivy.core.window 
 
 <HomeScreen>:
+    btn_start: btn_start
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -17,6 +18,7 @@
             pos_hint: {"x":.25,"top":.75}
             font_size: 70
         StartButtonWidget:
+            id: btn_start
             font_name: "fonts/zekton.ttf"
             screen: root
             text: "Start"
@@ -24,6 +26,7 @@
             pos_hint: {"x":.25,"top":.5}
 
 <ChallengeCompletedScreen>:
+    btn_continue: btn_continue
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -38,6 +41,7 @@
             pos_hint: {"x":.25,"top":.75}
             font_size: 70
         StartButtonWidget:
+            id: btn_continue
             font_name: "fonts/zekton.ttf"
             screen: root
             text: "Continue"
