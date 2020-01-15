@@ -24,6 +24,7 @@
             text: "Start"
             size_hint: .5, .1
             pos_hint: {"x":.25,"top":.5}
+            on_touch_up: root.btn_start_on_touch_up(*args)
 
 <ChallengeCompletedScreen>:
     btn_continue: btn_continue
@@ -47,6 +48,7 @@
             text: "Continue"
             size_hint: .5, .1
             pos_hint: {"x":.25,"top":.5}
+            on_touch_up: root.btn_continue_on_touch_up(*args)
 
 <StartButtonWidget>:
     Label:

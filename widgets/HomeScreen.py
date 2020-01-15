@@ -9,7 +9,7 @@ class HomeScreen(Screen):
 
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
-        self.btn_start.bind(on_touch_up = self.btn_start_on_touch_up)
+        #self.btn_start.bind(on_touch_up = self.btn_start_on_touch_up)
 
     def btn_start_on_touch_up(self, instance, touch):
         if self.collide_point(*touch.pos):
