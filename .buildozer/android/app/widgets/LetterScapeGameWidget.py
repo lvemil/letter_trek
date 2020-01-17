@@ -1,6 +1,6 @@
 import kivy
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, StringProperty 
+from kivy.properties import NumericProperty, StringProperty, ObjectProperty
 
 class LetterScapeGameWidget(Widget):
     level = NumericProperty()
@@ -8,3 +8,4 @@ class LetterScapeGameWidget(Widget):
     level_challenges = NumericProperty()
     word = StringProperty()
     timer = NumericProperty()
+    gly_tiles = ObjectProperty()

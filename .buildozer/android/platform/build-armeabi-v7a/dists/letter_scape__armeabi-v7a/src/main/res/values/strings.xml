@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Letter Scape</string>
-    <string name="private_version">1578803717.2860146</string>
+    <string name="private_version">1579239061.531936</string>
     <string name="presplash_color">#000000</string>
     <string name="urlScheme">kivy</string>
 </resources>

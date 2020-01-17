@@ -9,6 +9,7 @@ from kivy.core.window import Window
 from kivy.metrics import *
 from kivy.properties import StringProperty 
 from kivy.app import App
+from kivy.properties import ObjectProperty
 
 from widgets.LetterScapeGameWidget import LetterScapeGameWidget
 from widgets.TileWidget import TileWidget
@@ -17,13 +18,18 @@ from core.GameEngine import GameEngine
 import random
 
 class BoardScreen(Screen):
-    
+    game_widget: ObjectProperty()
+
     def __init__(self, **kwargs):
         super(BoardScreen, self).__init__(**kwargs)
         #self.on_enter = self.do_on_enter
-        self.on_pre_enter = self.do_on_enter
-       
-    def do_on_enter(self):
+        self.on_pre_enter = self.do_on_pre_enter
+
+    def tile_on_touch_up(self, instance, touch):
+        if instance.collide_point(*touch.pos):
+            self.__game_engine.touch(instance.row, instance.col)    
+
+    def do_on_pre_enter(self):
         
         if App.get_running_app().status == "starting": # initialize game board
             self.initialize_board()
@@ -39,7 +45,7 @@ class BoardScreen(Screen):
 
         # start clock
         self.__first_move = True
-        self.__root_widget.timer = 0
+        self.game_widget.timer = 0
         self.__clock_event = Clock.schedule_interval(self.on_timer_interval, 1)
 
         # set app status
@@ -47,7 +53,7 @@ class BoardScreen(Screen):
 
     def on_timer_interval(self, dt):
         if self.__first_move == False:
-            self.__root_widget.timer += 1
+            self.game_widget.timer += 1
         return True
 
     def on_tile_move_completed(self, animation, widget):
@@ -87,50 +93,41 @@ class BoardScreen(Screen):
         self.__first_move = False
 
     def on_tile_removed(self, animation, widget):
-        self.__tiles_holder.remove_widget(widget)
+        self.game_widget.gly_tiles.remove_widget(widget)
         
         if len(self.get_all_tile_widgets()) == 0:
             App.get_running_app().status = "challenge_completed"
             self.manager.current = "challenge_completed"
 
     def add_tiles(self):
-        self.__tiles_holder.clear_widgets()
+        self.game_widget.gly_tiles.clear_widgets()
         self.set_tiles_cols(self.__game_engine.board.cols)
         for r in range(self.__game_engine.board.rows):
             for c in range(self.__game_engine.board.cols):
                 self.add_tile(self.__game_engine.board.get_tile(r, c), r, c)  
 
     def get_tile_widget(self, row, col):
-        return [w for w in self.__tiles_holder.children if type(w) is TileWidget and w.row == row and w.col == col][0]
+        return [w for w in self.game_widget.gly_tiles.children if type(w) is TileWidget and w.row == row and w.col == col][0]
 
     def get_all_tile_widgets(self):
-        return [w for w in self.__tiles_holder.children if type(w) is TileWidget]
+        return [w for w in self.game_widget.gly_tiles.children if type(w) is TileWidget]
 
     def set_level(self, level):
-        self.__root_widget.level = level
+        self.game_widget.level = level
 
     def set_challenge(self, challenge):
-        self.__root_widget.challenge = challenge
-        self.__root_widget.level_challenges = self.__game_engine.level_challenges
+        self.game_widget.challenge = challenge
+        self.game_widget.level_challenges = self.__game_engine.level_challenges
 
     def set_word(self, word):
-        self.__root_widget.word = word
+        self.game_widget.word = word
 
     def set_tiles_cols(self, cols):
-        self.__tiles_holder.cols = cols
+        self.game_widget.gly_tiles.cols = cols
 
     def initialize_board(self):
-        rw = LetterScapeGameWidget()
-
-        self.add_widget(rw)
-        th = rw.children[0].children[1]
-
-        self.__root_widget = rw
-        self.__tiles_holder = th
-
         self.__game_engine = GameEngine()
         self.__game_engine.on_tile_moved += self.on_tile_moved
-
         self.__game_engine.start()
 
     def clear_tiles(self):
@@ -147,7 +144,7 @@ class BoardScreen(Screen):
 
     def add_tile(self, letter, row, col):
         if letter == "_":
-            self.__tiles_holder.add_widget(Label())
+            self.game_widget.gly_tiles.add_widget(Label())
         else:
             
             t = TileWidget()
@@ -160,5 +157,6 @@ class BoardScreen(Screen):
             win_w = Window.size[0] - (dp(10) * 2)
             t.size_hint_y = None
             t.height = win_w / self.__game_engine.board.rows
+            t.bind(on_touch_up = self.tile_on_touch_up)
 
-            self.__tiles_holder.add_widget(t)
+            self.game_widget.gly_tiles.add_widget(t)

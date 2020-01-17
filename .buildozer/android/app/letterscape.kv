@@ -2,7 +2,11 @@
 #: import StartButtonWidget widgets 
 #: import Window kivy.core.window 
 
+<MyLabel@Label>:
+    font_name: "fonts/zekton.ttf"
+         
 <HomeScreen>:
+    btn_start: btn_start
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -17,13 +21,19 @@
             pos_hint: {"x":.25,"top":.75}
             font_size: 70
         StartButtonWidget:
+            id: btn_start
             font_name: "fonts/zekton.ttf"
             screen: root
             text: "Start"
             size_hint: .5, .1
             pos_hint: {"x":.25,"top":.5}
+            on_touch_up: root.btn_start_on_touch_up(*args)
 
 <ChallengeCompletedScreen>:
+    btn_continue: btn_continue
+    lbl_challenge_completed: lbl_challenge_completed
+    lbl_level: lbl_level
+    lbl_challenge: lbl_challenge
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -31,18 +41,42 @@
             pos: self.pos
             size: self.size
     FloatLayout:
-        Label:
-            font_name: "fonts/zekton.ttf"
+        MyLabel:
+            id: lbl_challenge_completed
             text: "Challenge \ncompleted!"
+            halign: "left"
             size_hint: .5, .1
-            pos_hint: {"x":.25,"top":.75}
+            pos_hint: {"x":.15,"top":.84}
             font_size: 70
+        MyLabel:
+            id: lbl_level
+            text_size: self.size
+            text: "Level: 1"
+            halign: "left"
+            size_hint: .5, .1
+            pos_hint: {"x":.15,"top":.75}
+            font_size: 40
+        MyLabel:
+            id: lbl_challenge
+            text: "Challenge: 1"
+            text_size: self.size
+            halign: "left"
+            size_hint: .5, .1
+            pos_hint: {"x":.15,"top":.70}
+            font_size: 40        
         StartButtonWidget:
+            id: btn_continue
             font_name: "fonts/zekton.ttf"
             screen: root
             text: "Continue"
             size_hint: .5, .1
-            pos_hint: {"x":.25,"top":.5}
+            pos_hint: {"x":.15,"center_y":.5}
+            on_touch_up: root.btn_continue_on_touch_up(*args)
+
+<BoardScreen>:
+    game_widget: game_widget
+    LetterScapeGameWidget:
+        id: game_widget
 
 <StartButtonWidget>:
     Label:
@@ -59,6 +93,7 @@
         pos: root.pos
 
 <LetterScapeGameWidget>:
+    gly_tiles: gly_tiles
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -122,7 +157,7 @@
             text: str(root.word)
             font_size: 70   
         GridLayout:
-            id: glTiles
+            id: gly_tiles
             spacing: dp(5),dp(5)
             padding: dp(10)
         BoxLayout:
