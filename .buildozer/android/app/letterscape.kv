@@ -16,13 +16,14 @@
     FloatLayout:
         Label:
             font_name: "fonts/zekton.ttf"
-            text: "LetterQuest"
+            text: "Letter Escape"
             size_hint: .5, .1
             pos_hint: {"x":.25,"top":.75}
-            font_size: 70
+            font_size: dp(35)
         StartButtonWidget:
             id: btn_start
             font_name: "fonts/zekton.ttf"
+            font_size: dp(20)
             screen: root
             text: "Start"
             size_hint: .5, .1
@@ -47,7 +48,7 @@
             halign: "left"
             size_hint: .5, .1
             pos_hint: {"x":.15,"top":.84}
-            font_size: 70
+            font_size: dp(35)
         MyLabel:
             id: lbl_level
             text_size: self.size
@@ -55,7 +56,7 @@
             halign: "left"
             size_hint: .5, .1
             pos_hint: {"x":.15,"top":.75}
-            font_size: 40
+            font_size: dp(20)
         MyLabel:
             id: lbl_challenge
             text: "Challenge: 1"
@@ -63,10 +64,11 @@
             halign: "left"
             size_hint: .5, .1
             pos_hint: {"x":.15,"top":.70}
-            font_size: 40        
+            font_size: dp(20)        
         StartButtonWidget:
             id: btn_continue
             font_name: "fonts/zekton.ttf"
+            font_size: dp(20)
             screen: root
             text: "Continue"
             size_hint: .5, .1
@@ -91,6 +93,7 @@
         text: root.text  
         size: root.size
         pos: root.pos
+        font_size: root.font_size
 
 <LetterScapeGameWidget>:
     gly_tiles: gly_tiles
@@ -119,7 +122,7 @@
                 font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.level)
-                font_size: 50
+                font_size: dp(30)
             Label:
                 canvas.before:
                     Color:
@@ -134,7 +137,7 @@
                 font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.challenge)
-                font_size: 50 
+                font_size: dp(30) 
             Label:
                 canvas.before:
                     Color:
@@ -149,13 +152,13 @@
                 font_name: "fonts/zekton.ttf"
                 color: [0.176, 0.804, 0.796, 1]
                 text: str(root.timer)
-                font_size: 50
+                font_size: dp(30)
         Label:
             font_name: "fonts/zekton.ttf"
             color: [0.176, 0.804, 0.796, 1]
             size_hint: 1, 0.2
             text: str(root.word)
-            font_size: 70   
+            font_size: dp(35)   
         GridLayout:
             id: gly_tiles
             spacing: dp(5),dp(5)
@@ -177,6 +180,6 @@
         color: root.c
         center: root.center
         text: root.letter
-        font_size: 70 
+        font_size: dp(35) 
 
 
