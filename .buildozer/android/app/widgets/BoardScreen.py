@@ -24,10 +24,28 @@ class BoardScreen(Screen):
         super(BoardScreen, self).__init__(**kwargs)
         #self.on_enter = self.do_on_enter
         self.on_pre_enter = self.do_on_pre_enter
+        self.on_enter = self.do_on_enter
+
+    def do_on_enter(self):
+        # animate tiles in
+        for tile in self.get_all_tile_widgets():
+            new_x = self.__tiles_x[f"{tile.row}_{tile.col}"]
+            anim = Animation(x=new_x, d = .2, t = "linear")
+            anim.start(tile)
 
     def tile_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
             self.__game_engine.touch(instance.row, instance.col)    
+
+    def move_tiles_outside(self, dt):
+        # record tiles position
+        self.__tiles_x = dict([(f"{t.row}_{t.col}",t.x) for t in self.get_all_tile_widgets()])
+        
+        # move tiles outside
+        for tile in self.get_all_tile_widgets():
+            d = random.choice([1,-1])
+            tile.pos = (tile.x + Window.size[0] * d, tile.y )       
+        
 
     def do_on_pre_enter(self):
         
@@ -43,6 +61,8 @@ class BoardScreen(Screen):
         self.set_word(self.__game_engine.word)
         self.add_tiles()
 
+        Clock.schedule_once(self.move_tiles_outside, .01)
+        
         # start clock
         self.__first_move = True
         self.game_widget.timer = 0
@@ -131,11 +151,7 @@ class BoardScreen(Screen):
         self.__game_engine.start()
 
     def clear_tiles(self):
-        # get all tile widgets
-        all_tiles = self.get_all_tile_widgets()
-        
-        # animate
-        for tile in all_tiles:
+        for tile in self.get_all_tile_widgets():
             d = random.choice([1,-1])
             new_center_x = tile.center_x + Window.size[0] * d
             anim = Animation(center_x=new_center_x, d = .2, t = "linear")
@@ -158,5 +174,6 @@ class BoardScreen(Screen):
             t.size_hint_y = None
             t.height = win_w / self.__game_engine.board.rows
             t.bind(on_touch_up = self.tile_on_touch_up)
+            #t.bind(x=self.tile_on_x_change)
 
             self.game_widget.gly_tiles.add_widget(t)

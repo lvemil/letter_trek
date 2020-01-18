@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Letter Scape
+title = Letter Trek
 
 # (str) Package name
 package.name = letter_trek
