@@ -4,10 +4,10 @@
 title = Letter Scape
 
 # (str) Package name
-package.name = letter_scape
+package.name = letter_trek
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = com.lvemil.letter_scape
+package.domain = com.lvemil.letter_trek
 
 # (str) Source code where the main.py live
 source.dir = .

@@ -26,6 +26,8 @@ class LetterScapeApp(App):
 
     def build(self):
 
+        self.title = 'Letter Trek'
+
         sm = ScreenManager(transition=FadeTransition())
         sm.add_widget(HomeScreen(name='home'))
         sm.add_widget(BoardScreen(name='board'))
