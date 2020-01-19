@@ -1,5 +1,4 @@
 *.pyc
 .pytest_cache
-.vscode
 .buildozer
 __pycache__
