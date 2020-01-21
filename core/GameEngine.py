@@ -9,7 +9,27 @@ class GameEngine:
         2:{"c":3, "bh":3, "bw":3, "wl":3},
         3:{"c":3, "bh":3, "bw":3, "wl":4},
         4:{"c":3, "bh":4, "bw":4, "wl":5}, 
-        5:{"c":3, "bh":4, "bw":4, "wl":5}
+        5:{"c":3, "bh":4, "bw":4, "wl":5},
+        6:{"c":2, "bh":3, "bw":3, "wl":2},
+        7:{"c":3, "bh":3, "bw":3, "wl":3},
+        8:{"c":3, "bh":3, "bw":3, "wl":4},
+        9:{"c":3, "bh":4, "bw":4, "wl":5}, 
+        10:{"c":3, "bh":4, "bw":4, "wl":5},
+        11:{"c":2, "bh":3, "bw":3, "wl":2},
+        12:{"c":3, "bh":3, "bw":3, "wl":3},
+        13:{"c":3, "bh":3, "bw":3, "wl":4},
+        14:{"c":3, "bh":4, "bw":4, "wl":5}, 
+        15:{"c":3, "bh":4, "bw":4, "wl":5},
+        16:{"c":2, "bh":3, "bw":3, "wl":2},
+        17:{"c":3, "bh":3, "bw":3, "wl":3},
+        18:{"c":3, "bh":3, "bw":3, "wl":4},
+        19:{"c":3, "bh":4, "bw":4, "wl":5}, 
+        20:{"c":3, "bh":4, "bw":4, "wl":5},
+        21:{"c":2, "bh":3, "bw":3, "wl":2},
+        22:{"c":3, "bh":3, "bw":3, "wl":3},
+        23:{"c":3, "bh":3, "bw":3, "wl":4},
+        24:{"c":3, "bh":4, "bw":4, "wl":5}, 
+        25:{"c":3, "bh":4, "bw":4, "wl":5},
     }
 
     def __init__(self):
@@ -56,7 +76,10 @@ class GameEngine:
     def start(self):
         self.__level = 0
         self.next_level()
- 
+
+    def get_level_count(self):
+        return len(self.__level_def) - 1
+
     def next_level(self):
         self.__level += 1
         self.__challenge = 0
@@ -72,7 +95,6 @@ class GameEngine:
 
     def current_word(self):
         return self.__word 
-
 
     def next_challenge(self):
         if self.__challenge >= self.level_param("c"):            

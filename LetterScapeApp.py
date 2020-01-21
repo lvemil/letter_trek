@@ -16,17 +16,24 @@ from widgets.BoardScreen import BoardScreen
 from widgets.HomeScreen import HomeScreen
 from widgets.ChallengeCompletedScreen import ChallengeCompletedScreen
 from widgets.StartButtonWidget import StartButtonWidget
-from kivy.properties import StringProperty 
+from kivy.properties import StringProperty, ObjectProperty 
 
 from core.GameEngine import GameEngine
+from core.GameState import GameState
+
 
 class LetterScapeApp(App):
 
     status = StringProperty()
+    game_engine = ObjectProperty()
+    game_state = ObjectProperty()
 
     def build(self):
 
         self.title = 'Letter Trek'
+        
+        self.game_engine = GameEngine()
+        self.game_state = GameState()
 
         sm = ScreenManager(transition=FadeTransition())
         sm.add_widget(HomeScreen(name='home'))

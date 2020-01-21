@@ -25,6 +25,8 @@ class BoardScreen(Screen):
         #self.on_enter = self.do_on_enter
         self.on_pre_enter = self.do_on_pre_enter
         self.on_enter = self.do_on_enter
+        self.__game_engine = GameEngine()
+        self.__game_engine.on_tile_moved += self.on_tile_moved
 
     def do_on_enter(self):
         # animate tiles in
@@ -146,8 +148,6 @@ class BoardScreen(Screen):
         self.game_widget.gly_tiles.cols = cols
 
     def initialize_board(self):
-        self.__game_engine = GameEngine()
-        self.__game_engine.on_tile_moved += self.on_tile_moved
         self.__game_engine.start()
 
     def clear_tiles(self):
