@@ -8,4 +8,8 @@ class LetterScapeGameWidget(Widget):
     level_challenges = NumericProperty()
     word = StringProperty()
     timer = NumericProperty()
+
     gly_tiles = ObjectProperty()
+    pro_challenge = ObjectProperty()
+    pro_timer = ObjectProperty()
+    pro_level = ObjectProperty()

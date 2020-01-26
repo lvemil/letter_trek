@@ -4,10 +4,10 @@ from kivy.uix.label import Label
 from kivy.properties import BooleanProperty, NumericProperty
 from kivy.app import App
 
-class StartButtonWidget(Label):
+class ProgressWidget(Label):
     disabled = BooleanProperty()
     progress = NumericProperty()
+    progress_start = NumericProperty()
 
     def __init__(self, **kwargs):
-        super(StartButtonWidget, self).__init__(**kwargs)
-    
+        super(ProgressWidget, self).__init__(**kwargs)

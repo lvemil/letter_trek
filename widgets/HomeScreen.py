@@ -9,24 +9,37 @@ from widgets.StartButtonWidget import StartButtonWidget
 class HomeScreen(Screen):
     #btn_start = ObjectProperty()
     gly_levels = ObjectProperty()
-
+   
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
         self.on_enter = self.do_on_pre_enter
-        
+
+    @property
+    def game_engine(self):
+        return App.get_running_app().game_engine
+
     def do_on_pre_enter(self):
 
-        App.get_running_app().game_state.load()
-        App.get_running_app().game_state.level = 2
-
-        for i in range(1, App.get_running_app().game_engine.get_level_count()+1):
+        self.game_engine.load()
+        current_level = self.game_engine.level if self.game_engine.get_level_progress() < 1 else self.game_engine.level + 1 
+        progress = self.game_engine.get_level_progress()
+        
+        for i in range(1, self.game_engine.get_level_count()+1):
             l = StartButtonWidget()
             l.text = str(i)
             l.font_name = "fonts/zekton.ttf"
             l.font_size = dp(20)
-            l.disabled = True if i > App.get_running_app().game_state.level  else False
-            if l.disabled == False:
+            if i > current_level:
+                l.disabled = True
+                l.progress = 1
+            elif i < current_level:
+                l.disabled = False
                 l.bind(on_touch_up = self.btn_start_on_touch_up)
+                l.progress = 1    
+            elif i == current_level:
+                l.disabled = False
+                l.bind(on_touch_up = self.btn_start_on_touch_up)
+                l.progress = progress
             self.gly_levels.add_widget(l)
 
     def btn_start_on_touch_up(self, instance, touch):

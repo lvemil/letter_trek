@@ -33,8 +33,7 @@ class LetterScapeApp(App):
         self.title = 'Letter Trek'
         
         self.game_engine = GameEngine()
-        self.game_state = GameState()
-
+        
         sm = ScreenManager(transition=FadeTransition())
         sm.add_widget(HomeScreen(name='home'))
         sm.add_widget(BoardScreen(name='board'))

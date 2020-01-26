@@ -1,11 +1,13 @@
 from core.Board import Board
 from core.Event import Event
+from core.GameState import GameState
+
 import pickle
 import random
 
 class GameEngine:
     __level_def = {
-        1:{"c":2, "bh":3, "bw":3, "wl":2},
+        1:{"c":5, "bh":3, "bw":3, "wl":2},
         2:{"c":3, "bh":3, "bw":3, "wl":3},
         3:{"c":3, "bh":3, "bw":3, "wl":4},
         4:{"c":3, "bh":4, "bw":4, "wl":5}, 
@@ -36,6 +38,7 @@ class GameEngine:
         self.on_board_reset = Event()
         self.on_tile_moved = Event()
         self.on_challenge_completed = Event()
+        self.state = GameState()
  
     @property
     def board(self):
@@ -77,8 +80,21 @@ class GameEngine:
         self.__level = 0
         self.next_level()
 
+    def load(self):
+        self.state.load()
+        self.level = self.state.level
+        self.challenge = self.state.challenge
+        
+    def save(self):
+        self.state.level = self.level
+        self.state.challenge = self.challenge
+        self.state.save()
+
     def get_level_count(self):
         return len(self.__level_def) - 1
+
+    def get_level_progress(self):
+        return self.challenge / self.level_param("c")
 
     def next_level(self):
         self.__level += 1
@@ -89,20 +105,14 @@ class GameEngine:
         return self.__level_def[self.__level][param_name]
 
     def random_word(self, word_len):
-        with open('words_en.pkl','rb') as f:
+        with open('data/words_en.pkl','rb') as f:
             words = pickle.load(f)
             return random.choice([w for w in words if len(w) == word_len])
 
     def current_word(self):
         return self.__word 
 
-    def next_challenge(self):
-        if self.__challenge >= self.level_param("c"):            
-            self.__level += 1
-            self.__challenge = 0
-        
-        self.__challenge += 1
-        
+    def set_board(self):
         self.__board = Board(self.level_param("bh"),self.level_param("bw"))
         self.__board.on_tile_moved += self.__on_board_tile_moved
         self.__board.fill_random()
@@ -116,9 +126,18 @@ class GameEngine:
         # fire on_board_changed event
         self.on_board_reset(self)
 
+    def next_challenge(self):
+        if self.__challenge >= self.level_param("c"):            
+            self.__level += 1
+            self.__challenge = 0
+        
+        self.__challenge += 1
+        
+        self.set_board()
+
     def check_challenge_completed(self):
         return self.__board.solved(self.__word)
-
+        
     def touch(self, row, col):
         return self.__board.touch(row, col)
 

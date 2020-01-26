@@ -1,3 +1,6 @@
+import pickle
+import os
+
 class GameState:
     
     def __init__(self):
@@ -21,7 +24,22 @@ class GameState:
         self.__challenge = challenge
 
     def save(self):
-        pass
+        data = {
+            "challenge":self.challenge, 
+            "level": self.level
+        }
+        with open('data/state.pkl','wb',) as f:
+            pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
     def load(self):
-        pass
+        fn = 'data/state.pkl'
+        
+        if os.path.exists(fn) == False:
+            self.level = 0
+            self.challenge = 0
+            self.save()
+        else:
+            with open('data/state.pkl','rb') as f:
+                data = pickle.load(f)
+                self.level = data["level"]
+                self.challenge = data["challenge"]

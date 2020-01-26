@@ -90,12 +90,15 @@
         id: game_widget
 
 <StartButtonWidget>:
-    canvas:
+    canvas.before:
         Color:
             rgba: [0.176, 0.804, 0.796, 1]
         Line:
+            width: dp(1)
+            rounded_rectangle: (self.x, self.y, self.width * root.progress, self.height, dp(10))
+        Line:
             width: dp(2)
-            rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
+            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(10))
     font_name: "fonts/zekton.ttf"
     text: root.text  
     size: root.size
@@ -103,8 +106,27 @@
     font_size: root.font_size
     opacity: .1 if root.disabled else 1
 
+<ProgressWidget>:
+    canvas.before:
+        Color:
+            rgba: 0.176, 0.804, 0.796, 1
+        Line:
+            width: dp(1)
+            circle: (self.center_x, self.center_y, (self.height-10)/2)
+        Line:
+            width: dp(3)
+            cap: 'round'
+            circle: (self.center_x, self.center_y, (self.height-10)/2, 360 * root.progress_start, 360 * root.progress)
+    font_name: "fonts/zekton.ttf"
+    color: [0.176, 0.804, 0.796, 1]
+    text: str(root.text)
+    font_size: dp(30)
+
 <LetterScapeGameWidget>:
     gly_tiles: gly_tiles
+    pro_challenge: pro_challenge
+    pro_timer: pro_timer
+    pro_level: pro_level
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -120,47 +142,12 @@
         BoxLayout:
             orientation:'horizontal'
             size_hint: 1, 0.2
-            Label:
-                canvas.before:
-                    Color:
-                        rgba: 0.176, 0.804, 0.796, 1
-                    Line:
-                        width: dp(1)
-                        circle: (self.center_x, self.center_y, (self.height-10)/2)
-                font_name: "fonts/zekton.ttf"
-                color: [0.176, 0.804, 0.796, 1]
-                text: str(root.level)
-                font_size: dp(30)
-            Label:
-                canvas.before:
-                    Color:
-                        rgba: 0.176, 0.804, 0.796, 1
-                    Line:
-                        width: dp(1)
-                        circle: (self.center_x, self.center_y, (self.height-10)/2)
-                    Line:
-                        width: dp(3)
-                        cap: 'round'
-                        circle: (self.center_x, self.center_y, (self.height-10)/2, 0, 360 * ((root.challenge-1) / (root.level_challenges if root.level_challenges > 0 else 1)))
-                font_name: "fonts/zekton.ttf"
-                color: [0.176, 0.804, 0.796, 1]
-                text: str(root.challenge)
-                font_size: dp(30) 
-            Label:
-                canvas.before:
-                    Color:
-                        rgba: 0.176, 0.804, 0.796, 1
-                    Line:
-                        width: dp(1)
-                        circle: (self.center_x, self.center_y, (self.height-10)/2)
-                    Line:
-                        width: dp(3)
-                        cap: 'round'
-                        circle: (self.center_x, self.center_y, (self.height-10)/2, (30 * (root.timer % 12)), (30 * (root.timer % 12)) + 30)
-                font_name: "fonts/zekton.ttf"
-                color: [0.176, 0.804, 0.796, 1]
-                text: str(root.timer)
-                font_size: dp(30)
+            ProgressWidget:
+                id: pro_level
+            ProgressWidget:
+                id: pro_challenge 
+            ProgressWidget:
+                id: pro_timer
         Label:
             font_name: "fonts/zekton.ttf"
             color: [0.176, 0.804, 0.796, 1]
@@ -173,7 +160,6 @@
             padding: dp(10)
         BoxLayout:
             size_hint: 1, 0.30
-        
 
 <TileWidget>:
     canvas:

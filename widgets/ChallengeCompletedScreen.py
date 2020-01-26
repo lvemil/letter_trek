@@ -12,6 +12,10 @@ class ChallengeCompletedScreen(Screen):
     lbl_level = ObjectProperty()
     lbl_challenge = ObjectProperty()
 
+    @property
+    def game_engine(self):
+        return App.get_running_app().game_engine
+
     def __init__(self, **kwargs):
         super(ChallengeCompletedScreen, self).__init__(**kwargs)
         self.on_enter = self.do_on_enter
@@ -30,10 +34,10 @@ class ChallengeCompletedScreen(Screen):
 
         self.lbl_level.pos_hint = {"x":.05,"top":.75}      
         self.lbl_level.opacity = 0
-        self.lbl_level.text = f"Level: {self.manager.get_screen('board').game_widget.level}"
+        self.lbl_level.text = f"Level: {self.game_engine.level}"
         
         self.lbl_challenge.pos_hint = {"x":.1,"top":.70}
-        self.lbl_challenge.text = f"Challenge: {self.manager.get_screen('board').game_widget.challenge}"
+        self.lbl_challenge.text = f"Challenge: {self.game_engine.challenge}"
         self.lbl_challenge.opacity = 0
         
         self.btn_continue.pos_hint = {"x":.15,"center_y":.45}
