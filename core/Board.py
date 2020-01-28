@@ -98,6 +98,7 @@ class Board:
             self.set_tile(r, c, word[i])
  
     def solved_at(self, word, row, col, depth = 0):
+        self.__path.append((row,col))
         adjacent_rc = [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]]
         adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
         neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
@@ -111,7 +112,8 @@ class Board:
                     res = self.solved_at(word, nr, nc, depth + 1)
                     if res == True:
                         return True
-
+                    else:
+                        self.__path.pop()
         return False
 
     def solved(self, word):
@@ -126,9 +128,10 @@ class Board:
                 lp.append(self.pos_to_axis(p))
         
         # check solved in every found position
+        self.__path = []
         for r,c in lp:
             if self.solved_at(word, r, c, 0):
-                return True
+                return self.__path
         
         return False
     

@@ -3,6 +3,7 @@ from kivy.metrics import *
 from kivy.properties import ObjectProperty
 from kivy.app import App
 from kivy.animation import Animation
+from widgets.animations import Single, Parallel, Serie
 
 from widgets.TileWidget import TileWidget
 
@@ -45,14 +46,18 @@ class ChallengeCompletedScreen(Screen):
 
     def do_on_enter(self):
         
-        anim = Animation(opacity=1, pos_hint = {"x":.15,"top":.84}, d = 1, t = "in_out_quart")
-        anim.start(self.lbl_challenge_completed)
+        a1 = Animation(opacity=1, pos_hint = {"x":.15,"top":.84}, d = 1, t = "in_out_quart")
+        s1 = Single(a1, self.lbl_challenge_completed)  
+        #anim.start(self.lbl_challenge_completed)
         
-        anim = Animation(opacity=1, pos_hint = {"x":.15,"top":.75}, d = 1, t = "in_out_quart")
-        anim.start(self.lbl_level)
+        a2 = Animation(opacity=1, pos_hint = {"x":.15,"top":.75}, d = 1, t = "in_out_quart")
+        s1 = Single(a2, self.lbl_level) 
+        #anim.start(self.lbl_level)
 
-        anim = Animation(opacity=1, pos_hint = {"x":.15,"top":.70}, d = 1, t = "in_out_quart")
-        anim.start(self.lbl_challenge)
+        a3 = Animation(opacity=1, pos_hint = {"x":.15,"top":.70}, d = 1, t = "in_out_quart")
+        s3 = Single(a3, self.lbl_challenge_completed)
+        #anim.start(self.lbl_challenge)
 
-        anim = Animation(opacity=1, pos_hint = {"x":.15,"center_y":.5}, d = 1, t = "in_out_quart")
-        anim.start(self.btn_continue)
+        a4 = Animation(opacity=1, pos_hint = {"x":.15,"center_y":.5}, d = 1, t = "in_out_quart")
+        s3 = Single(a3, self.lbl_challenge_completed)
+        #anim.start(self.btn_continue)

@@ -126,7 +126,7 @@ class BoardScreen(Screen):
         
         if len(self.get_all_tile_widgets()) == 0:
             App.get_running_app().status = "challenge_completed"
-            self.manager.current = "challenge_completed"
+            self.manager.current = "challenge_completed"           
 
     def add_tiles(self):
         self.game_widget.gly_tiles.clear_widgets()
@@ -138,8 +138,8 @@ class BoardScreen(Screen):
     def get_tile_widget(self, row, col):
         return [w for w in self.game_widget.gly_tiles.children if type(w) is TileWidget and w.row == row and w.col == col][0]
 
-    def get_all_tile_widgets(self):
-        return [w for w in self.game_widget.gly_tiles.children if type(w) is TileWidget]
+    def get_all_tile_widgets(self, exclude=[]):
+        return [w for w in self.game_widget.gly_tiles.children if (type(w) is TileWidget) and ((w.row, w.col) not in exclude)]
 
     def set_level(self, level):
         self.game_widget.level = level
@@ -162,7 +162,7 @@ class BoardScreen(Screen):
         self.game_engine.next_challenge()
 
     def clear_tiles(self):
-        for tile in self.get_all_tile_widgets():
+        for tile in self.get_all_tile_widgets(self.game_engine.solution):
             d = random.choice([1,-1])
             new_center_x = tile.center_x + Window.size[0] * d
             anim = Animation(center_x=new_center_x, d = .2, t = "linear")

@@ -136,7 +136,12 @@ class GameEngine:
         self.set_board()
 
     def check_challenge_completed(self):
-        return self.__board.solved(self.__word)
+        r = self.__board.solved(self.__word)
+        if r == False:
+            return False
+        else:
+            self.solution = r
+            return True
         
     def touch(self, row, col):
         return self.__board.touch(row, col)
