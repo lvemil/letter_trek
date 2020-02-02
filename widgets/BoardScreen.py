@@ -162,7 +162,7 @@ class BoardScreen(Screen):
         self.game_engine.next_challenge()
 
     def clear_tiles(self):
-        for tile in self.get_all_tile_widgets(self.game_engine.solution):
+        for tile in self.get_all_tile_widgets():#(self.game_engine.solution):
             d = random.choice([1,-1])
             new_center_x = tile.center_x + Window.size[0] * d
             anim = Animation(center_x=new_center_x, d = .2, t = "linear")
