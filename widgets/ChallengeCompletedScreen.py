@@ -1,12 +1,11 @@
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.metrics import *
+#from kivy.metrics import *
 from kivy.properties import ObjectProperty
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.animation import Animation
 
-from widgets.animations.Single import Single
-from widgets.animations.Parallel import Parallel
-from widgets.animations.Serie import Serie
+from widgets.Sequence import Sequence
 from widgets.TileWidget import TileWidget
 
 class ChallengeCompletedScreen(Screen):
@@ -46,35 +45,19 @@ class ChallengeCompletedScreen(Screen):
         self.btn_continue.pos_hint = {"x":.15,"center_y":.45}
         self.btn_continue.opacity = 0        
 
-    def do_on_animation_complete(self, *args):
-        print("done!")
+    def do_on_enter(self):    
+        s = Sequence(Clock)
 
-    def do_on_enter(self):
-        
         a1 = Animation(opacity=1, pos_hint = {"x":.15,"top":.84}, d = 1, t = "in_out_quart")
-        s1 = Single(a1, self.lbl_challenge_completed)  
-        #anim.start(self.lbl_challenge_completed)
-        
+        s.add_animation(a1, self.lbl_challenge_completed, 0.01)
+
         a2 = Animation(opacity=1, pos_hint = {"x":.15,"top":.75}, d = 1, t = "in_out_quart")
-        s2 = Single(a2, self.lbl_level) 
-        #anim.start(self.lbl_level)
+        s.add_animation(a2, self.lbl_level, 0.01)
 
         a3 = Animation(opacity=1, pos_hint = {"x":.15,"top":.70}, d = 1, t = "in_out_quart")
-        s3 = Single(a3, self.lbl_challenge)
-        #anim.start(self.lbl_challenge)
+        s.add_animation(a3, self.lbl_challenge, 0.01)
 
         a4 = Animation(opacity=1, pos_hint = {"x":.15,"center_y":.5}, d = 1, t = "in_out_quart")
-        s4 = Single(a4, self.btn_continue)
-        #anim.start(self.btn_continue)
-
-        p = Parallel()
-        p.add_child(s1)
-        p.add_child(s2)
-        p.add_child(s3)
-        
-        s = Serie()
-        s.add_child(p)
-        s.add_child(s4)
-        s.on_complete += self.do_on_animation_complete
+        s.add_animation(a4, self.btn_continue, 0.01)
 
         s.play()

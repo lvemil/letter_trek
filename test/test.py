@@ -8,6 +8,12 @@ class TestBoard(unittest.TestCase):
         b.set_tiles("DIQRGGNAKRYNLB_A")
         assert b.solved("ANGRY")
 
+    def test_Path(self):
+        b = Board(3,3)
+        b.set_tiles("NLQRERJD_")
+        p = b.solved("RED")
+        assert len(p) == 3
+
     def test_FUR(self):
         b = Board(3,3)
         b.fill_random()
@@ -16,3 +22,9 @@ class TestBoard(unittest.TestCase):
         print(b.get_tiles())
         b.mess("FUR")
         print(b.get_tiles())
+
+    def test_NON(self):
+        b = Board(3,3)
+        b.set_tiles("NXQONRJD_")
+        p = b.solved("NON")
+        assert len(p) == 3

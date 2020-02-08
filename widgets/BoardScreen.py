@@ -13,6 +13,8 @@ from kivy.app import App
 from widgets.LetterScapeGameWidget import LetterScapeGameWidget
 from widgets.TileWidget import TileWidget
 from widgets.ProgressWidget import ProgressWidget
+from widgets.Sequence import Sequence
+
 from core.GameEngine import GameEngine
 
 import random
@@ -121,12 +123,9 @@ class BoardScreen(Screen):
         anim.start(tile)
         self.__first_move = False
 
-    def on_tile_removed(self, animation, widget):
-        self.game_widget.gly_tiles.remove_widget(widget)
-        
-        if len(self.get_all_tile_widgets()) == 0:
-            App.get_running_app().status = "challenge_completed"
-            self.manager.current = "challenge_completed"           
+    def on_all_tiles_removed(self, dt):
+        App.get_running_app().status = "challenge_completed"
+        self.manager.current = "challenge_completed"  
 
     def add_tiles(self):
         self.game_widget.gly_tiles.clear_widgets()
@@ -162,13 +161,37 @@ class BoardScreen(Screen):
         self.game_engine.next_challenge()
 
     def clear_tiles(self):
-        for tile in self.get_all_tile_widgets():#(self.game_engine.solution):
+        solution_tiles = [w     
+            for w in self.game_widget.gly_tiles.children 
+            if (type(w) is TileWidget) 
+                and ((w.row, w.col) in self.game_engine.solution)]
+        not_solution_tiles = [w 
+            for w in self.game_widget.gly_tiles.children 
+            if (type(w) is TileWidget) 
+                and ((w.row, w.col) not in self.game_engine.solution)]
+        
+        s = Sequence(Clock)
+
+        for tile in not_solution_tiles:
             d = random.choice([1,-1])
             new_center_x = tile.center_x + Window.size[0] * d
             anim = Animation(center_x=new_center_x, d = .2, t = "linear")
-            anim.bind(on_complete = self.on_tile_removed)        
-            anim.start(tile)
+            s.add_animation(anim, tile, 0.01)
 
+        for tile in solution_tiles:
+            d = random.choice([1,-1])
+            new_center_x = tile.center_x + Window.size[0] * d
+            anim = Animation(center_x=new_center_x, d = .2, t = "linear")
+            s.add_animation(anim, tile, 0.5)
+        
+        s.play()
+
+        Clock.schedule_once(self.on_all_tiles_removed, 1)
+
+
+
+
+        
     def add_tile(self, letter, row, col):
         if letter == "_":
             self.game_widget.gly_tiles.add_widget(Label())
@@ -183,7 +206,7 @@ class BoardScreen(Screen):
             win_w = Window.size[0] - (dp(10) * 2)
             t.size_hint_y = None
             t.height = win_w / self.game_engine.board.rows
-            t.bind(on_touch_up = self.tile_on_touch_up)
+            t.bind(on_touch_down = self.tile_on_touch_up)
             #t.bind(x=self.tile_on_x_change)
 
             self.game_widget.gly_tiles.add_widget(t)

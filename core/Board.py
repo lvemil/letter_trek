@@ -100,12 +100,13 @@ class Board:
     def solved_at(self, word, row, col, depth = 0):
         self.__path.append((row,col))
         adjacent_rc = [self.adjacent_position(row, col, d) for d in [0, 1, 2, 3]]
-        adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c)]
+        adjacent_rc_inside = [(r,c) for (r,c) in adjacent_rc if self.inside(r,c) and (r,c) not in self.__path]
         neighbors= [self.get_tile(r,c) for r,c in adjacent_rc_inside]
 
         for i in range(len(neighbors)):
             if neighbors[i] == word[depth + 1]:
                 if depth + 1 == len(word) - 1:
+                    self.__path.append(adjacent_rc_inside[i])
                     return True
                 else:
                     nr, nc = adjacent_rc_inside[i]

@@ -21,8 +21,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from core.GameEngine import GameEngine
 from core.GameState import GameState
 
-
-class LetterScapeApp(App):
+class LetterTrekApp(App):
 
     status = StringProperty()
     game_engine = ObjectProperty()
