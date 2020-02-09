@@ -10,12 +10,13 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 
-from widgets.LetterScapeGameWidget import LetterScapeGameWidget
-from widgets.TileWidget import TileWidget
-from widgets.BoardScreen import BoardScreen
-from widgets.HomeScreen import HomeScreen
-from widgets.ChallengeCompletedScreen import ChallengeCompletedScreen
-from widgets.StartButtonWidget import StartButtonWidget
+from ui.LetterScapeGameWidget import LetterScapeGameWidget
+from ui.TileWidget import TileWidget
+from ui.BoardScreen import BoardScreen
+from ui.HomeScreen import HomeScreen
+from ui.ChallengeCompletedScreen import ChallengeCompletedScreen
+from ui.StartButtonWidget import StartButtonWidget
+
 from kivy.properties import StringProperty, ObjectProperty 
 
 from core.GameEngine import GameEngine

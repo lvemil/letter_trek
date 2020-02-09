@@ -3,8 +3,8 @@ from kivy.app import App
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 
-from widgets.TileWidget import TileWidget
-from widgets.StartButtonWidget import StartButtonWidget
+from ui.TileWidget import TileWidget
+from ui.StartButtonWidget import StartButtonWidget
 
 class HomeScreen(Screen):
     #btn_start = ObjectProperty()

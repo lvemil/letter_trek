@@ -10,10 +10,10 @@ from kivy.metrics import dp
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.app import App
 
-from widgets.LetterScapeGameWidget import LetterScapeGameWidget
-from widgets.TileWidget import TileWidget
-from widgets.ProgressWidget import ProgressWidget
-from widgets.Sequence import Sequence
+from ui.LetterScapeGameWidget import LetterScapeGameWidget
+from ui.TileWidget import TileWidget
+from ui.ProgressWidget import ProgressWidget
+from ui.Sequence import Sequence
 
 from core.GameEngine import GameEngine
 

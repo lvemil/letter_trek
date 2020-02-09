@@ -5,8 +5,8 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.animation import Animation
 
-from widgets.Sequence import Sequence
-from widgets.TileWidget import TileWidget
+from ui.Sequence import Sequence
+from ui.TileWidget import TileWidget
 
 class ChallengeCompletedScreen(Screen):
     btn_continue = ObjectProperty()
