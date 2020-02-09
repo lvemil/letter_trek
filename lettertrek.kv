@@ -7,6 +7,7 @@
          
 <HomeScreen>:
     gly_levels: gly_levels
+    scv_levels: scv_levels 
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -25,6 +26,7 @@
                 pos_hint: {"x":.25,"top":.75}
                 font_size: dp(60)
             ScrollView:
+                id: scv_levels
                 pos_hint: {"x":.05,"top":.5}
                 size_hint: 0.9, .1
                 do_scroll_y: False

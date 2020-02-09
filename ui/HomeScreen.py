@@ -7,8 +7,8 @@ from ui.TileWidget import TileWidget
 from ui.StartButtonWidget import StartButtonWidget
 
 class HomeScreen(Screen):
-    #btn_start = ObjectProperty()
     gly_levels = ObjectProperty()
+    scv_levels = ObjectProperty()
    
     def __init__(self, **kwargs):
         super(HomeScreen, self).__init__(**kwargs)
@@ -40,7 +40,11 @@ class HomeScreen(Screen):
                 l.disabled = False
                 l.bind(on_touch_up = self.btn_start_on_touch_up)
                 l.progress = progress
+                btn = l
             self.gly_levels.add_widget(l)
+        
+        self.scv_levels.scroll_to(btn, padding=dp(30))
+
 
     def btn_start_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
