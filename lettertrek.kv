@@ -1,6 +1,7 @@
 #:kivy 1.11.1
 #: import StartButtonWidget ui 
 #: import Window kivy.core.window 
+#: import ew kivy.uix.effectwidget
 
 <MyLabel@Label>:
     font_name: "fonts/zekton.ttf"
@@ -80,11 +81,11 @@
             id: btn_continue
             font_name: "fonts/zekton.ttf"
             font_size: dp(20)
-            screen: root
             text: "Continue"
             size_hint: .5, .1
             pos_hint: {"x":.15,"center_y":.5}
             progress: 1
+            disabled: False
             on_touch_up: root.btn_continue_on_touch_up(*args)
 
 <BoardScreen>:
@@ -95,7 +96,7 @@
 <StartButtonWidget>:
     canvas.before:
         Color:
-            rgba: [0.176, 0.804, 0.796, 1]
+            rgba: [1, 0, 0, 1] if self.pressed else [0.176, 0.804, 0.796, 1]
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width * root.progress, self.height, dp(10))
