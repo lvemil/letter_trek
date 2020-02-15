@@ -167,14 +167,14 @@
 <TileWidget>:
     canvas:
         Color:
-            rgba: self.c
+            rgba: [0.973, 0.463, 0.160, 1] if root.is_in_word else [0.176, 0.804, 0.796, 1]
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
     Label:
         font_name: "fonts/zekton.ttf"
-        color: root.c
+        color: [0.973, 0.463, 0.160, 1] if root.is_in_word else [0.176, 0.804, 0.796, 1]
         center: root.center
         text: root.letter
         font_size: dp(35) 
