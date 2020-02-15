@@ -89,9 +89,47 @@
             on_touch_up: root.btn_continue_on_touch_up(*args)
 
 <BoardScreen>:
-    game_widget: game_widget
-    LetterScapeGameWidget:
-        id: game_widget
+    gly_tiles: gly_tiles
+    pro_challenge: pro_challenge
+    pro_timer: pro_timer
+    pro_level: pro_level
+    canvas.before:
+        Color:
+            rgba: 0.110, 0.129, 0.188, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation:'vertical'
+        size: root.size
+        pos: root.pos
+        padding: dp(10)
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: 1, 0.15
+            ProgressWidget:
+                id: pro_level
+            ProgressWidget:
+                id: pro_challenge      
+            ProgressWidget:
+                id: pro_timer       
+        Label:
+            font_name: "fonts/zekton.ttf"
+            color: [0.176, 0.804, 0.796, 1]
+            size_hint: 1, 0.10
+            text: str(root.word)
+            font_size: dp(35)   
+        GridLayout:
+            canvas.before:
+                Color:
+                    rgba: 0.1, 0.1, 0.1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            id: gly_tiles
+            spacing: dp(5),dp(5)
+        BoxLayout:
+            size_hint: 1, 0.15
 
 <StartButtonWidget>:
     canvas.before:
@@ -125,46 +163,6 @@
     color: [0.176, 0.804, 0.796, 1]
     text: str(root.text)
     font_size: dp(30)
-
-<LetterScapeGameWidget>:
-    gly_tiles: gly_tiles
-    pro_challenge: pro_challenge
-    pro_timer: pro_timer
-    pro_level: pro_level
-    canvas.before:
-        Color:
-            rgba: 0.110, 0.129, 0.188, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    BoxLayout:
-        orientation:'vertical'
-        size: root.size
-        pos: root.pos
-        BoxLayout:
-            size_hint: 1, 0.1
-        BoxLayout:
-            orientation:'horizontal'
-            size_hint: 1, 0.2
-            ProgressWidget:
-                id: pro_level
-            ProgressWidget:
-                id: pro_challenge      
-            ProgressWidget:
-                id: pro_timer       
-        Label:
-            font_name: "fonts/zekton.ttf"
-            color: [0.176, 0.804, 0.796, 1]
-            size_hint: 1, 0.2
-            text: str(root.word)
-            font_size: dp(35)   
-        GridLayout:
-            id: gly_tiles
-            spacing: dp(5),dp(5)
-            padding: dp(10)
-        BoxLayout:
-            size_hint: 1, 0.2
-            
 
 <TileWidget>:
     canvas:

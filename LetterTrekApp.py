@@ -10,7 +10,6 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 
-from ui.LetterScapeGameWidget import LetterScapeGameWidget
 from ui.TileWidget import TileWidget
 from ui.BoardScreen import BoardScreen
 from ui.HomeScreen import HomeScreen
