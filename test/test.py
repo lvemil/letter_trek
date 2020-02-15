@@ -28,3 +28,9 @@ class TestBoard(unittest.TestCase):
         b.set_tiles("NXQONRJD_")
         p = b.solved("NON")
         assert len(p) == 3
+
+    def test_Solve(self):
+        b = Board(3,3)
+        b.set_tiles("WE_MBONRR")
+        touches = b.solve("NOW")
+        print(touches)

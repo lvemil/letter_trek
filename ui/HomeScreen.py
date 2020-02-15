@@ -19,7 +19,6 @@ class HomeScreen(Screen):
         return App.get_running_app().game_engine
 
     def do_on_pre_enter(self):
-
         self.game_engine.load()
         self.current_level = self.game_engine.level if self.game_engine.get_level_progress() < 1 else self.game_engine.level + 1 
         progress = self.game_engine.get_level_progress()

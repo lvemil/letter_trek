@@ -167,6 +167,41 @@ class Board:
                 r, c = self.adjacent_position(r, c, d)
         return False
 
+    def all_posible_moves(self):
+        moves = []
+        e_row, e_col = self.pos_to_axis(self.get_tiles().index('_'))
+        for d in [0, 1, 2, 3]:
+            r, c = self.adjacent_position(e_row, e_col, d)
+            while self.inside(r,c):
+                moves.append((r, c))
+                r, c = self.adjacent_position(r, c, d)
+        return moves
+
+    def copy(self):
+        b = Board(rows = self.__rows, cols = self.__cols)
+        b.set_tiles(self.get_tiles())
+        return b
+
+    def solve(self, word):
+        b = self.copy()
+        depth = 0
+        previous_states = []
+        states = [b.get_tiles()]
+        while len(states) > 0:
+            depth += 1
+            new_states = []
+            for state in states:
+                b.set_tiles(state)    
+                moves = b.all_posible_moves()
+                for r,c in moves:
+                    b.touch(r, c)
+                    if b.get_tiles() not in previous_states:
+                        if b.solved(word):
+                            return depth
+                        new_states.append(b.get_tiles())
+                    b.set_tiles(state)
+            previous_states += new_states
+            states = new_states
 
 
 

@@ -59,13 +59,15 @@ class BoardScreen(Screen):
             self.initialize_board()
 
         if App.get_running_app().status == "challenge_starting": # next challenge
-            self.game_engine.next_challenge()
+            self.game_engine.next_challenge()            
 
         # update board
         self.set_level(self.game_engine.level)
         self.set_challenge(self.game_engine.challenge)
         self.set_word(self.game_engine.word)
         self.add_tiles()
+
+        print(self.game_engine.board.solve(self.game_engine.word))
 
         Clock.schedule_once(self.move_tiles_outside, .01)
         
