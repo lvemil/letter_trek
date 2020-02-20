@@ -15,6 +15,7 @@ from ui.BoardScreen import BoardScreen
 from ui.HomeScreen import HomeScreen
 from ui.ChallengeCompletedScreen import ChallengeCompletedScreen
 from ui.StartButtonWidget import StartButtonWidget
+from ui.ImageButton import ImageButton
 
 from kivy.properties import StringProperty, ObjectProperty 
 

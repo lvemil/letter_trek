@@ -1,7 +1,7 @@
 #:kivy 1.11.1
 #: import StartButtonWidget ui 
+#: import ImageButton ui 
 #: import Window kivy.core.window 
-#: import ew kivy.uix.effectwidget
 
 <MyLabel@Label>:
     font_name: "fonts/zekton.ttf"
@@ -90,9 +90,12 @@
 
 <BoardScreen>:
     gly_tiles: gly_tiles
-    pro_challenge: pro_challenge
-    pro_timer: pro_timer
-    pro_level: pro_level
+    #pro_challenge: pro_challenge
+    #pro_timer: pro_timer
+    #pro_level: pro_level
+    pro_moves: pro_moves
+    btn_back: btn_back
+    btn_restart: btn_restart
     canvas.before:
         Color:
             rgba: 0.110, 0.129, 0.188, 1
@@ -104,15 +107,19 @@
         size: root.size
         pos: root.pos
         padding: dp(10)
+        spacing: dp(5)
         BoxLayout:
             orientation:'horizontal'
             size_hint: 1, 0.15
+            #ProgressWidget:
+            #    id: pro_timer
             ProgressWidget:
-                id: pro_level
-            ProgressWidget:
-                id: pro_challenge      
-            ProgressWidget:
-                id: pro_timer       
+                id: pro_moves       
+            ImageButton:
+                id: btn_restart
+                text: ''
+                disabled: False
+                source: "assets/restart.png"
         Label:
             font_name: "fonts/zekton.ttf"
             color: [0.176, 0.804, 0.796, 1]
@@ -120,16 +127,33 @@
             text: str(root.word)
             font_size: dp(35)   
         GridLayout:
-            canvas.before:
-                Color:
-                    rgba: 0.1, 0.1, 0.1, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+            size_hint: 1, 0.60
+            #canvas.before:
+            #    Color:
+            #        rgba: 0.1, 0.1, 0.1, 1
+            #    Rectangle:
+            #        pos: self.pos
+            #        size: self.size
             id: gly_tiles
             spacing: dp(5),dp(5)
         BoxLayout:
             size_hint: 1, 0.15
+            MyLabel:
+                text: "Level\n" + str(root.level)
+                halign: 'center'
+                font_size: dp(15)
+            ImageButton:
+                id: btn_back
+                text: ''
+                disabled: False
+                source: "assets/back.png"            
+            MyLabel:
+                text: "Challenge\n" + str(root.challenge) + " / " + str(root.level_challenges)
+                halign: 'center'
+                font_size: dp(15)
+
+<ImageButton>:
+    allow_stretch: True
 
 <StartButtonWidget>:
     canvas.before:
