@@ -8,6 +8,9 @@ class ProgressWidget(Label):
     disabled = BooleanProperty()
     progress = NumericProperty()
     progress_start = NumericProperty()
+    accent = BooleanProperty()
 
     def __init__(self, **kwargs):
         super(ProgressWidget, self).__init__(**kwargs)
+        self.disabled = False
+        self.accent = False 

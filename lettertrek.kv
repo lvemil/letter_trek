@@ -1,7 +1,13 @@
 #:kivy 1.11.1
 #: import StartButtonWidget ui 
 #: import ImageButton ui 
-#: import Window kivy.core.window 
+#: import Window kivy.core.window
+#: import utils kivy.utils
+#: set main_color               "#2dcdcb"
+#: set accent_color             "#f87629"
+#: set background_color         "#1c2130"
+#: set accent_2_color           "#FF0000"
+#: set button_pressed_color     "#FFFFFF"
 
 <MyLabel@Label>:
     font_name: "fonts/zekton.ttf"
@@ -11,15 +17,14 @@
     scv_levels: scv_levels 
     canvas.before:
         Color:
-            rgba: 0.110, 0.129, 0.188, 1
+            rgba: utils.get_color_from_hex(background_color)
         Rectangle:
             pos: self.pos
             size: self.size
     BoxLayout:
         orientation: 'vertical'
         FloatLayout:
-            Label:
-                font_name: "fonts/zekton.ttf"
+            MyLabel:
                 text: "Letter\nTrek"
                 halign: 'center'
                 markup: True
@@ -49,7 +54,7 @@
     lbl_challenge: lbl_challenge
     canvas.before:
         Color:
-            rgba: 0.110, 0.129, 0.188, 1
+            rgba: utils.get_color_from_hex(background_color)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -98,7 +103,7 @@
     btn_restart: btn_restart
     canvas.before:
         Color:
-            rgba: 0.110, 0.129, 0.188, 1
+            rgba: utils.get_color_from_hex(background_color)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -120,9 +125,9 @@
                 text: ''
                 disabled: False
                 source: "assets/restart.png"
-        Label:
-            font_name: "fonts/zekton.ttf"
-            color: [0.176, 0.804, 0.796, 1]
+                on_release: root.btn_restart_on_release(*args)
+        MyLabel:
+            color: utils.get_color_from_hex(main_color)
             size_hint: 1, 0.10
             text: str(root.word)
             font_size: dp(35)   
@@ -139,18 +144,21 @@
         BoxLayout:
             size_hint: 1, 0.15
             MyLabel:
+                color: utils.get_color_from_hex(main_color)
                 text: "Level\n" + str(root.level)
                 halign: 'center'
-                font_size: dp(15)
+                font_size: dp(20)
             ImageButton:
                 id: btn_back
                 text: ''
                 disabled: False
-                source: "assets/back.png"            
+                source: "assets/back.png"        
+                on_release: root.btn_back_on_release(*args)    
             MyLabel:
+                color: utils.get_color_from_hex(main_color)
                 text: "Challenge\n" + str(root.challenge) + " / " + str(root.level_challenges)
                 halign: 'center'
-                font_size: dp(15)
+                font_size: dp(20)
 
 <ImageButton>:
     allow_stretch: True
@@ -158,7 +166,7 @@
 <StartButtonWidget>:
     canvas.before:
         Color:
-            rgba: [1, 0, 0, 1] if self.pressed else [0.176, 0.804, 0.796, 1]
+            rgba: utils.get_color_from_hex(button_pressed_color) if self.pressed else utils.get_color_from_hex(main_color)
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width * root.progress, self.height, dp(10))
@@ -169,13 +177,14 @@
     text: root.text  
     size: root.size
     pos: root.pos
+    color: utils.get_color_from_hex(button_pressed_color) if self.pressed else utils.get_color_from_hex(main_color)
     font_size: root.font_size
     opacity: .1 if root.disabled else 1
 
 <ProgressWidget>:
     canvas.before:
         Color:
-            rgba: 0.176, 0.804, 0.796, 1
+            rgba: utils.get_color_from_hex(accent_2_color) if self.accent else utils.get_color_from_hex(main_color)
         Line:
             width: dp(1)
             circle: (self.center_x, self.center_y, (self.height-10)/2)
@@ -184,21 +193,20 @@
             cap: 'round'
             circle: (self.center_x, self.center_y, (self.height-10)/2, 360 * root.progress_start, 360 * root.progress)
     font_name: "fonts/zekton.ttf"
-    color: [0.176, 0.804, 0.796, 1]
+    color: utils.get_color_from_hex(accent_2_color) if self.accent else utils.get_color_from_hex(main_color)
     text: str(root.text)
     font_size: dp(30)
 
 <TileWidget>:
     canvas:
         Color:
-            rgba: [0.973, 0.463, 0.160, 1] if root.is_in_word else [0.176, 0.804, 0.796, 1]
+            rgba: utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
-    Label:
-        font_name: "fonts/zekton.ttf"
-        color: [0.973, 0.463, 0.160, 1] if root.is_in_word else [0.176, 0.804, 0.796, 1]
+    MyLabel:
+        color: utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
         center: root.center
         text: root.letter
         font_size: dp(35) 

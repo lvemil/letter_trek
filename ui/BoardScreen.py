@@ -30,6 +30,8 @@ class BoardScreen(Screen):
     #pro_timer = ObjectProperty()
     pro_level = ObjectProperty()
     pro_moves = ObjectProperty()
+    btn_restart = ObjectProperty()
+    btn_back = ObjectProperty()
 
     @property
     def game_engine(self):
@@ -42,22 +44,58 @@ class BoardScreen(Screen):
         self.on_enter = self.do_on_enter
         self.game_engine.on_tile_moved += self.on_tile_moved
 
-    def do_on_enter(self):
-        # animate tiles in
+    def btn_back_on_release(self, instance):
+        self.manager.current = "home" 
+
+    def btn_restart_on_release(self, instance): #, touch):        
+        # stop pro_moves blinking
+        if self.available_moves == 0:
+            self.blink_moves.cancel_all(self.pro_moves, "opacity")
+            self.pro_moves.opacity = 1
+            self.pro_moves.accent = False
+        
+        # reset board
+        self.game_engine.board.set_tiles(self.starting_tiles)
+        self.add_tiles(self.game_engine.board.get_tiles())
+        
+        # reset availables moves
+        self.available_moves = self.max_moves
+        self.pro_moves.text = str(self.available_moves) 
+        self.pro_moves.progress = 1
+
+        # move tiles outside
+        print("restart - move outside" )
+        Clock.schedule_once(self.clear_all_tiles, .01)
+        Clock.schedule_once(self.animate_tiles_in, .21)
+        
+    def animate_tiles_in(self, *args):
         for tile in self.get_all_tile_widgets():
             new_x = self.__tiles_x[f"{tile.row}_{tile.col}"]
             anim = Animation(x=new_x, d = .2, t = "linear")
             anim.start(tile)
 
+    def do_on_enter(self):
+        # animate tiles in
+        self.animate_tiles_in()
+
     def tile_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
-            if self.game_engine.touch(instance.row, instance.col):
-                # update available moves
-                self.available_moves -= 1
-                self.pro_moves.text = str(self.available_moves) 
-                self.pro_moves.progress = self.available_moves / self.max_moves    
+            if self.available_moves > 0:
+                if self.game_engine.touch(instance.row, instance.col):
+                    # update available moves
+                    self.available_moves -= 1
+                    self.pro_moves.text = str(self.available_moves) 
+                    self.pro_moves.progress = self.available_moves / self.max_moves 
+                    if self.available_moves == 0 and not self.game_engine.check_challenge_completed():     
+                        self.pro_moves.accent = True                   
+                        fade = Animation(opacity = 0, d = .25, t = "linear")   
+                        show = Animation(opacity = 1, d = .25, t = "linear")    
+                        self.blink_moves = fade + show
+                        self.blink_moves.repeat = True
+                        self.blink_moves.start(self.pro_moves)
 
     def move_tiles_outside(self, dt):
+        print("move outside")
         # record tiles position
         self.__tiles_x = dict([(f"{t.row}_{t.col}",t.x) for t in self.get_all_tile_widgets()])
         
@@ -67,18 +105,14 @@ class BoardScreen(Screen):
             tile.pos = (tile.x + Window.size[0] * d, tile.y )       
 
     def do_on_pre_enter(self):
-        
-        if App.get_running_app().status == "starting": # initialize game board
-            self.initialize_board()
-
-        if App.get_running_app().status == "challenge_starting": # next challenge
-            self.game_engine.next_challenge()            
+        self.game_engine.next_challenge()
+        self.starting_tiles = self.game_engine.board.get_tiles()            
 
         # update board
         self.set_level(self.game_engine.level)
         self.set_challenge(self.game_engine.challenge)
         self.set_word(self.game_engine.word)
-        self.add_tiles()
+        self.add_tiles(self.game_engine.board.get_tiles())
         
         # available moves
         self.max_moves = self.game_engine.board.solve(self.game_engine.word)
@@ -146,12 +180,21 @@ class BoardScreen(Screen):
         App.get_running_app().status = "challenge_completed"
         self.manager.current = "challenge_completed"  
 
-    def add_tiles(self):
+    """ def add_tiles(self):
         self.gly_tiles.clear_widgets()
         self.set_tiles_cols(self.game_engine.board.cols)
         for r in range(self.game_engine.board.rows):
             for c in range(self.game_engine.board.cols):
-                self.add_tile(self.game_engine.board.get_tile(r, c), r, c)  
+                self.add_tile(self.game_engine.board.get_tile(r, c), r, c)   """
+
+    def add_tiles(self, tiles):
+        self.gly_tiles.clear_widgets()
+        self.set_tiles_cols(self.game_engine.board.cols)
+        p = 0
+        for r in range(self.game_engine.board.rows):
+            for c in range(self.game_engine.board.cols):
+                self.add_tile(tiles[p], r, c)  
+                p += 1
 
     def get_tile_widget(self, row, col):
         return [w for w in self.gly_tiles.children if type(w) is TileWidget and w.row == row and w.col == col][0]
@@ -178,6 +221,19 @@ class BoardScreen(Screen):
 
     def initialize_board(self):
         self.game_engine.next_challenge()
+
+    def clear_all_tiles(self, *args):
+        tiles = self.get_all_tile_widgets()
+        
+        s = Sequence(Clock)
+
+        for tile in tiles:
+            d = random.choice([1,-1])
+            new_center_x = tile.center_x + Window.size[0] * d
+            anim = Animation(center_x=new_center_x, d = .2, t = "linear")
+            s.add_animation(anim, tile, 0.01)
+
+        s.play()
 
     def clear_tiles(self):
         solution_tiles = [w     

@@ -84,10 +84,16 @@ class GameEngine:
         self.state.load()
         self.level = self.state.level
         self.challenge = self.state.challenge
+        #self.board.rows = self.state.rows
+        #self.board.cols = self.state.cols
+        #self.board.set_tiles(self.state.tiles)
         
     def save(self):
         self.state.level = self.level
         self.state.challenge = self.challenge
+        #self.state.rows = self.board.rows
+        #self.state.cols = self.board.cols
+        #self.state.tiles = self.board.get_tiles()        
         self.state.save()
 
     def get_level_count(self):

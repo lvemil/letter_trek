@@ -21,7 +21,7 @@ class HomeScreen(Screen):
     def do_on_pre_enter(self):
         self.game_engine.load()
         self.current_level = self.game_engine.level if self.game_engine.get_level_progress() < 1 else self.game_engine.level + 1 
-        progress = self.game_engine.get_level_progress()
+        progress = 1 #self.game_engine.get_level_progress()
         
         for i in range(1, self.game_engine.get_level_count()+1):
             l = StartButtonWidget()
@@ -33,8 +33,8 @@ class HomeScreen(Screen):
                 l.disabled = True
                 l.progress = 1
             elif i < self.current_level:
-                l.disabled = False
-                l.bind(on_touch_up = self.btn_start_on_touch_up)
+                l.disabled = True
+                #l.bind(on_touch_up = self.btn_start_on_touch_up)
                 l.progress = 1    
             elif i == self.current_level:
                 l.disabled = False
@@ -47,9 +47,9 @@ class HomeScreen(Screen):
 
     def btn_start_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
-            if instance.level < self.current_level:
-                self.game_engine.level = instance.level
-                self.game_engine.challenge = 0
+            #if instance.level < self.current_level:
+            #    self.game_engine.level = instance.level
+            #    self.game_engine.challenge = 0            
             self.manager.current = 'board'    
     
     
