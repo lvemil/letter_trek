@@ -80,19 +80,31 @@ class BoardScreen(Screen):
 
     def tile_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
-            if self.available_moves > 0:
-                if self.game_engine.touch(instance.row, instance.col):
-                    # update available moves
-                    self.available_moves -= 1
-                    self.pro_moves.text = str(self.available_moves) 
-                    self.pro_moves.progress = self.available_moves / self.max_moves 
-                    if self.available_moves == 0 and not self.game_engine.check_challenge_completed():     
-                        self.pro_moves.accent = True                   
-                        fade = Animation(opacity = 0, d = .25, t = "linear")   
-                        show = Animation(opacity = 1, d = .25, t = "linear")    
-                        self.blink_moves = fade + show
-                        self.blink_moves.repeat = True
-                        self.blink_moves.start(self.pro_moves)
+            if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
+                # update available moves
+                self.available_moves -= 1
+                self.pro_moves.text = str(self.available_moves) 
+                self.pro_moves.progress = self.available_moves / self.max_moves 
+                if self.available_moves == 0 and not self.game_engine.check_challenge_completed():     
+                    self.pro_moves.accent = True                   
+                    fade = Animation(opacity = 0, d = .25, t = "linear")   
+                    show = Animation(opacity = 1, d = .25, t = "linear")    
+                    self.blink_moves = fade + show
+                    self.blink_moves.repeat = True
+                    self.blink_moves.start(self.pro_moves)
+            else:
+                x = instance.center_x
+                nx = x + dp(5)
+                Animation.stop_all(instance)
+                (
+                    Animation(
+                        center_x=nx,
+                        t='out_quad', d=.02
+                    ) + Animation(
+                        center_x=x,
+                        t='out_elastic', d=.5
+                    )
+                ).start(instance)
 
     def move_tiles_outside(self, dt):
         print("move outside")
