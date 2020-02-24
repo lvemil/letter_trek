@@ -93,18 +93,7 @@ class BoardScreen(Screen):
                     self.blink_moves.repeat = True
                     self.blink_moves.start(self.pro_moves)
             else:
-                x = instance.center_x
-                nx = x + dp(5)
-                Animation.stop_all(instance)
-                (
-                    Animation(
-                        center_x=nx,
-                        t='out_quad', d=.02
-                    ) + Animation(
-                        center_x=x,
-                        t='out_elastic', d=.5
-                    )
-                ).start(instance)
+                instance.shake()
 
     def move_tiles_outside(self, dt):
         print("move outside")

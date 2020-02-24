@@ -205,10 +205,10 @@
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
-    MyLabel:
-        color: utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
-        center: root.center
-        text: root.letter
-        font_size: dp(35) 
+    font_name: "fonts/zekton.ttf"
+    color: utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
+    center: root.center
+    text: root.letter
+    font_size: dp(35) 
 
 
