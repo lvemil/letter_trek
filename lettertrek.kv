@@ -200,7 +200,7 @@
 <TileWidget>:
     canvas:
         Color:
-            rgba: utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
+            rgba: utils.get_color_from_hex(button_pressed_color) if root.is_pressed else utils.get_color_from_hex(accent_color) if root.is_in_word else utils.get_color_from_hex(main_color)
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)

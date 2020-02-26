@@ -79,7 +79,8 @@ class BoardScreen(Screen):
         self.animate_tiles_in()
 
     def tile_on_touch_up(self, instance, touch):
-        if instance.collide_point(*touch.pos):
+        if instance.collide_point(*touch.pos):            
+            print("touched")
             if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
                 # update available moves
                 self.available_moves -= 1
@@ -91,10 +92,10 @@ class BoardScreen(Screen):
                     show = Animation(opacity = 1, d = .25, t = "linear")    
                     self.blink_moves = fade + show
                     self.blink_moves.repeat = True
-                    self.blink_moves.start(self.pro_moves)
+                    self.blink_moves.start(self.pro_moves)                     
             else:
-                instance.shake()
-
+                instance.shake()            
+            
     def move_tiles_outside(self, dt):
         print("move outside")
         # record tiles position
