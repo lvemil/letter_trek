@@ -44,7 +44,7 @@ class BoardScreen(Screen):
         self.on_enter = self.do_on_enter
         self.game_engine.on_tile_moved += self.on_tile_moved
 
-    def btn_back_on_release(self, instance):
+    def btn_back_on_press(self, instance):
         self.manager.current = "home" 
 
     def btn_restart_on_press(self, instance): #, touch):        
