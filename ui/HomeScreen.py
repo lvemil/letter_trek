@@ -40,6 +40,7 @@ class HomeScreen(Screen):
                 l.disabled = False
                 l.bind(on_touch_up = self.btn_start_on_touch_up)
                 l.progress = progress
+                l.grow()
                 btn = l
             self.gly_levels.add_widget(l)
         
