@@ -125,7 +125,7 @@
                 text: ''
                 disabled: False
                 source: "assets/restart.png"
-                on_release: root.btn_restart_on_release(*args)
+                on_release: root.btn_restart_on_press(*args)
         MyLabel:
             color: utils.get_color_from_hex(main_color)
             size_hint: 1, 0.10
@@ -153,7 +153,7 @@
                 text: ''
                 disabled: False
                 source: "assets/back.png"        
-                on_release: root.btn_back_on_release(*args)    
+                on_press: root.btn_back_on_press(*args)    
             MyLabel:
                 color: utils.get_color_from_hex(main_color)
                 text: "Challenge\n" + str(root.challenge) + " / " + str(root.level_challenges)

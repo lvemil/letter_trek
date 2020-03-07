@@ -47,11 +47,11 @@ class BoardScreen(Screen):
     def btn_back_on_release(self, instance):
         self.manager.current = "home" 
 
-    def btn_restart_on_release(self, instance): #, touch):        
+    def btn_restart_on_press(self, instance): #, touch):        
         # stop pro_moves blinking
         if self.available_moves == 0:
-            self.blink_moves.cancel_all(self.pro_moves, "opacity")
-            self.pro_moves.opacity = 1
+            #self.blink_moves.cancel_all(self.pro_moves, "opacity")
+            self.pro_moves.stop_blink()
             self.pro_moves.accent = False
         
         # reset board
@@ -78,23 +78,17 @@ class BoardScreen(Screen):
         # animate tiles in
         self.animate_tiles_in()
 
-    def tile_on_touch_up(self, instance, touch):
-        if instance.collide_point(*touch.pos):            
-            print("touched")
-            if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
-                # update available moves
-                self.available_moves -= 1
-                self.pro_moves.text = str(self.available_moves) 
-                self.pro_moves.progress = self.available_moves / self.max_moves 
-                if self.available_moves == 0 and not self.game_engine.check_challenge_completed():     
-                    self.pro_moves.accent = True                   
-                    fade = Animation(opacity = 0, d = .25, t = "linear")   
-                    show = Animation(opacity = 1, d = .25, t = "linear")    
-                    self.blink_moves = fade + show
-                    self.blink_moves.repeat = True
-                    self.blink_moves.start(self.pro_moves)                     
-            else:
-                instance.shake()            
+    def tile_on_release(self, instance): #, touch):
+        if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
+            # update available moves
+            self.available_moves -= 1
+            self.pro_moves.text = str(self.available_moves) 
+            self.pro_moves.progress = self.available_moves / self.max_moves 
+            if self.available_moves == 0 and not self.game_engine.check_challenge_completed():     
+                self.pro_moves.accent = True                   
+                self.pro_moves.blink()                   
+        else:
+            instance.shake()            
             
     def move_tiles_outside(self, dt):
         print("move outside")
@@ -278,6 +272,7 @@ class BoardScreen(Screen):
             win_w = Window.size[0] - (dp(10) * 2)
             #t.size_hint_y = None
             #t.height = win_w / self.game_engine.board.rows
-            t.bind(on_touch_down = self.tile_on_touch_up)
+            #t.bind(on_touch_down = self.tile_on_touch_up)
+            t.bind(on_release = self.tile_on_release)
             
             self.gly_tiles.add_widget(t)
