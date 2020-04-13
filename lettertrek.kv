@@ -7,7 +7,7 @@
 #: set accent_color             "#9c8578"
 #: set background_color         "#1c2130"
 #: set accent_2_color           "#FF0000"
-#: set accent_3_color           "f87629"
+#: set accent_3_color           "#f87629"
 #: set button_pressed_color     "#FFFFFF"
 
 <MyLabel@Label>:
@@ -212,13 +212,13 @@
 <TileWidget>:
     canvas:
         Color:
-            rgba: utils.get_color_from_hex(button_pressed_color) if root.is_pressed else utils.get_color_from_hex(main_color) if root.is_in_word else utils.get_color_from_hex(accent_color)
+            rgba: utils.get_color_from_hex(button_pressed_color) if root.is_pressed else utils.get_color_from_hex(accent_3_color) if root.is_in_word else utils.get_color_from_hex(accent_3_color)
         Line:
             width: dp(1)
             rounded_rectangle: (self.x, self.y, self.width, self.height, 20)
             joint: 'round'
     font_name: "fonts/zekton.ttf"
-    color: utils.get_color_from_hex(main_color) if root.is_in_word else utils.get_color_from_hex(accent_color)
+    color: utils.get_color_from_hex(button_pressed_color) if root.is_pressed else utils.get_color_from_hex(accent_3_color) if root.is_in_word else utils.get_color_from_hex(accent_3_color)
     center: root.center
     text: root.letter
     font_size: dp(35) 

@@ -9,9 +9,9 @@ class GameEngine:
     __level_def = {
         1:{"c":5, "bh":3, "bw":3, "wl":2},
         2:{"c":3, "bh":3, "bw":3, "wl":3},
-        3:{"c":3, "bh":3, "bw":3, "wl":4},
+        3:{"c":3, "bh":4, "bw":4, "wl":4},
         4:{"c":3, "bh":4, "bw":4, "wl":5}, 
-        5:{"c":3, "bh":4, "bw":4, "wl":5},
+        5:{"c":3, "bh":3, "bw":3, "wl":3},
         6:{"c":2, "bh":3, "bw":3, "wl":2},
         7:{"c":3, "bh":3, "bw":3, "wl":3},
         8:{"c":3, "bh":3, "bw":3, "wl":4},
@@ -135,10 +135,8 @@ class GameEngine:
     def next_challenge(self):
         if self.__challenge >= self.level_param("c"):            
             self.__level += 1
-            self.__challenge = 0
-        
-        self.__challenge += 1
-        
+            self.__challenge = 0        
+        self.__challenge += 1        
         self.set_board()
 
     def check_challenge_completed(self):

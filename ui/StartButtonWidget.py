@@ -5,6 +5,7 @@ from kivy.properties import BooleanProperty, NumericProperty
 from kivy.app import App
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
+from kivy.core.audio import SoundLoader
 
 class StartButtonWidget(ButtonBehavior, Label):
     disabled = BooleanProperty()
@@ -17,7 +18,8 @@ class StartButtonWidget(ButtonBehavior, Label):
 
     def on_press(self):
         self.pressed = True
-        print('pressed')
+        
+        
 
     def on_release(self):
         self.pressed = False

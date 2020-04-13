@@ -1,5 +1,4 @@
 import unittest
-
 from core.Board import Board
 
 class TestBoard(unittest.TestCase):
@@ -28,9 +27,20 @@ class TestBoard(unittest.TestCase):
         b.set_tiles("NXQONRJD_")
         p = b.solved("NON")
         assert len(p) == 3
-
     def test_Solve(self):
         b = Board(3,3)
         b.set_tiles("WE_MBONRR")
-        touches = b.solve("NOW")
+        touches = b.solved("NOW")
         print(touches)
+
+    def test_Solve2(self):
+        b = Board(4,4)
+        b.set_tiles("EAOAUNMOA_THASMY")
+        touches = b.solved("HOMES")
+        print(touches)
+
+    def test_solved(self):
+        b = Board(3,3)
+        b.set_tiles("P_KXFANPR")
+        res = b.solved("FAR")
+        print(res)

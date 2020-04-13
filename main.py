@@ -1,3 +1,6 @@
+import os
+#os.environ['KIVY_AUDIO'] = 'sdl2'
+
 from kivy.config import Config 
 
 import kivy

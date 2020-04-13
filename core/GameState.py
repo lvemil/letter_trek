@@ -25,7 +25,7 @@ class GameState:
         fn = 'data/state.pkl'
         
         if os.path.exists(fn) == False:
-            self.level = 0
+            self.level = 1
             self.challenge = 0
             """ self.rows = 0
             self.cols = 0

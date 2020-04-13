@@ -9,12 +9,14 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty
 from kivy.app import App
+from kivy.core.audio import SoundLoader
 
 from ui.TileWidget import TileWidget
 from ui.ProgressWidget import ProgressWidget
 from ui.Sequence import Sequence
 
 from core.GameEngine import GameEngine
+from core.BoardSolver import BoardSolver
 
 import random
 
@@ -56,7 +58,7 @@ class BoardScreen(Screen):
         
         # reset board
         self.game_engine.board.set_tiles(self.starting_tiles)
-        self.add_tiles(self.game_engine.board.get_tiles())
+        self.add_tiles(self.game_engine.board.get_tiles_str())
         
         # reset availables moves
         self.available_moves = self.max_moves
@@ -80,6 +82,15 @@ class BoardScreen(Screen):
 
     def tile_on_release(self, instance): #, touch):
         if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
+            sound = SoundLoader.load('assets/click.wav')
+            if sound:
+                print("Sound found at %s" % sound.source)
+                print("Sound is %.3f seconds" % sound.length)
+                sound.volume = 1
+                sound.play()
+            else:   
+                print("no sound loaded")
+            
             # update available moves
             self.available_moves -= 1
             self.pro_moves.text = str(self.available_moves) 
@@ -102,16 +113,18 @@ class BoardScreen(Screen):
 
     def do_on_pre_enter(self):
         self.game_engine.next_challenge()
-        self.starting_tiles = self.game_engine.board.get_tiles()            
+        self.starting_tiles = self.game_engine.board.get_tiles_str()            
 
         # update board
         self.set_level(self.game_engine.level)
         self.set_challenge(self.game_engine.challenge)
         self.set_word(self.game_engine.word)
-        self.add_tiles(self.game_engine.board.get_tiles())
+        self.add_tiles(self.game_engine.board.get_tiles_str())
         
         # available moves
-        self.max_moves = self.game_engine.board.solve(self.game_engine.word)
+        bs = BoardSolver()
+        self.max_moves = bs.solve2(self.game_engine.board, self.game_engine.word)
+        #self.max_moves = self.game_engine.board.solve(self.game_engine.word)
         self.available_moves = self.max_moves
         self.pro_moves.text = str(self.available_moves) 
         self.pro_moves.progress = 1
