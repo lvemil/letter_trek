@@ -54,9 +54,9 @@ class GameEngine:
 
     def next_challenge(self):
         # calculate next challenge
-        if self.challenge >= self.CHALLENGES_BY_LEVEL:            
+        if self.challenge+1 >= self.CHALLENGES_BY_LEVEL:            
             self.level += 1
-            self.challenge = 0        
+            self.challenge = -1        
         self.challenge += 1        
         
         # get puzzle
