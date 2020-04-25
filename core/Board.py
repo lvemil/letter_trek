@@ -116,7 +116,7 @@ class Board:
 
         if depth + 1 == len(word) - 1:
             if len(good_neighbors_idx) > 0:
-                self.__path.append(adjacent_rc_inside[0])
+                self.__path.append(adjacent_rc_inside[good_neighbors_idx[0]])
                 return True
             else:
                 return False

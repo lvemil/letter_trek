@@ -38,7 +38,7 @@ class ChallengeCompletedScreen(Screen):
         self.lbl_level.text = f"Level: {self.game_engine.level}"
         
         self.lbl_challenge.pos_hint = {"x":.1,"top":.70}
-        self.lbl_challenge.text = f"Challenge: {self.game_engine.challenge}"
+        self.lbl_challenge.text = f"Challenge: {self.game_engine.challenge + 1}"
         self.lbl_challenge.opacity = 0
         
         self.btn_continue.pos_hint = {"x":.15,"center_y":.45}

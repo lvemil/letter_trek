@@ -117,7 +117,7 @@ class BoardScreen(Screen):
 
         # update board
         self.set_level(self.game_engine.level)
-        self.set_challenge(self.game_engine.challenge)
+        self.set_challenge(self.game_engine.challenge + 1)
         self.set_word(self.game_engine.word)
         self.add_tiles(self.game_engine.board.get_tiles_str())
         
@@ -218,7 +218,7 @@ class BoardScreen(Screen):
 
     def set_challenge(self, challenge):
         self.challenge = challenge
-        self.level_challenges = self.game_engine.level_challenges
+        self.level_challenges = self.game_engine.CHALLENGES_BY_LEVEL
         #self.pro_challenge.progress = ((challenge-1) / (self.game_engine.level_challenges if self.game_engine.level_challenges > 0 else 1))
         #self.pro_challenge.text = str(challenge)
 
@@ -281,7 +281,7 @@ class BoardScreen(Screen):
             t.row = row
             t.col = col
             t.game_engine = self.game_engine
-            t.is_in_word = letter in self.game_engine.current_word()
+            t.is_in_word = letter in self.game_engine.word
             win_w = Window.size[0] - (dp(10) * 2)
             #t.size_hint_y = None
             #t.height = win_w / self.game_engine.board.rows

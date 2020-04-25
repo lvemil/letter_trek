@@ -58,7 +58,7 @@ class BoardSolver:
         depth = 0
         previous_states = set()
         states = set([b.get_tiles_str()])
-        while len(states) > 0:
+        while len(states) > 0 and depth <= 7:
             #print(f"depth: {depth}, states: {len(states)}")
             depth += 1
             childs = [self.get_childs(s, b) for s in states]
@@ -69,6 +69,7 @@ class BoardSolver:
                 return depth
             previous_states = previous_states | new_childs # best_new_states
             states = new_childs # best_new_states
+        return -1
 
     def psolve2(self, board, word):        
         b = board.copy()
@@ -76,8 +77,8 @@ class BoardSolver:
         previous_states = set()
         states = set([b.get_tiles_str()])
         with multiprocessing.Pool() as pool:
-            while len(states) > 0:
-                print(f"depth: {depth}, states: {len(states)}")
+            while len(states) > 0 and depth <= 10:
+                #print(f"depth: {depth}, states: {len(states)}")
                 depth += 1
                 result = pool.imap(partial(self.get_childs, board = b), states, chunksize=10000)
                 childs = set([item for sublist in result for item in sublist])
@@ -87,6 +88,7 @@ class BoardSolver:
                     return depth
                 previous_states.update(new_childs) # best_new_states
                 states = new_childs # best_new_states
+            return -1
 
     def solve(self, board, word):
         b = board.copy()

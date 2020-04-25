@@ -12,7 +12,7 @@ def main3():
     b = Board(4,4)
     b.set_tiles("EAOAUNMOA_THASMY")
     bs = BoardSolver()
-    touches = bs.psolve2(b, "HOMES")
+    touches = bs.solve2(b, "HOMES")
     print(touches)
 
 def main2():
