@@ -26,7 +26,7 @@ class GameState:
         
         if os.path.exists(fn) == False:
             self.level = 1
-            self.challenge = 0
+            self.challenge = -1
             """ self.rows = 0
             self.cols = 0
             self.tiles = "" """

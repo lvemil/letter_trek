@@ -141,6 +141,8 @@ class Board:
         for r,c in lp:
             if self.solved_at(word, r, c, 0):
                 return self.__path
+            else:
+                self.__path.pop()
         
         return False
     
