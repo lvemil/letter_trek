@@ -8,7 +8,7 @@ import random
 
 class GameEngine:
     def __init__(self):
-        self.LEVEL_COUNT = 100
+        self.LEVEL_COUNT = 20
         self.CHALLENGES_BY_LEVEL = 10
         self.on_board_reset = Event()
         self.on_tile_moved = Event()

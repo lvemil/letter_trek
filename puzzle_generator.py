@@ -27,9 +27,9 @@ def generate():
     all_words = get_words()
     all_words = list(filter(lambda w: len(w) > 1, all_words))
     puzzles = []
-    for s in range(3, 6, 1):
+    for s in [4,5]:#range(3, 6, 1):
         max_word_length = min(s * s - 1, 12)
-        for l in range(2, max_word_length, 1):
+        for l in [7,8]:#range(2, max_word_length, 1):
             words = get_random_words(all_words, l, 10)
             for w in words:
                 puzzles.append(generate_puzzle(w, s))
@@ -40,8 +40,10 @@ def save(puzzles, filename):
     open(filename, 'w').write('\n'.join(l))
 
 def main():
-    puzzles = generate()
-    save(puzzles, "puzzles4.txt")
+    all = []
+    for _ in range(50):
+        all.extend(generate())
+    save(all, "puzzles9.txt")
  
 if __name__ == '__main__':
     main()
