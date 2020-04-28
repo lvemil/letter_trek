@@ -21,15 +21,6 @@ class BoardSolver:
 
     def rate_state(self, state, word):
         return 1
-        # total_d = 0
-        # for p in range(len(word)-1):
-        #     lp = word[p]
-        #     ln = word[p+1]
-        #     lp_row, lp_col = self.pos_to_axis(state.index(lp))
-        #     ln_row, ln_col = self.pos_to_axis(state.index(ln)) 
-        #     d = ((lp_row - ln_row)**2 + (lp_col - ln_col)**2)**(0.5)
-        #     total_d += d
-        # return total_d
 
     def best_states(self, states, count, word):
         rates = sorted([(s, self.rate_state(s, word)) for s in states])[:count]

@@ -39,8 +39,6 @@ class Board:
         return self.__tiles[row][col]
 
     def set_tile(self, row, col, letter):
-        #p = self.axis_to_pos(row, col)
-        #self.__tiles = self.__tiles[:p] + letter + self.__tiles[p+1:]
         self.__tiles[row][col] = letter
 
     def get_tiles(self):
@@ -56,9 +54,6 @@ class Board:
             self.__tiles = [list(s) for s in l_tiles]
         else:
             self.__tiles = tiles.copy()
-        
-        #padding = self.__rows * self.__cols - len(tiles)
-        #self.__tiles = self.__tiles + ("-" * padding) 
 
     def inside(self, row, col):
         return row >= 0 and col >= 0 and row < self.__rows and col < self.__cols

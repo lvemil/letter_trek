@@ -41,7 +41,6 @@ class BoardScreen(Screen):
 
     def __init__(self, **kwargs):
         super(BoardScreen, self).__init__(**kwargs)
-        #self.on_enter = self.do_on_enter
         self.on_pre_enter = self.do_on_pre_enter
         self.on_enter = self.do_on_enter
         self.game_engine.on_tile_moved += self.on_tile_moved
@@ -52,7 +51,6 @@ class BoardScreen(Screen):
     def btn_restart_on_press(self, instance): #, touch):        
         # stop pro_moves blinking
         if self.available_moves == 0:
-            #self.blink_moves.cancel_all(self.pro_moves, "opacity")
             self.pro_moves.stop_blink()
             self.pro_moves.accent = False
         
@@ -66,7 +64,6 @@ class BoardScreen(Screen):
         self.pro_moves.progress = 1
 
         # move tiles outside
-        print("restart - move outside" )
         Clock.schedule_once(self.clear_all_tiles, .01)
         Clock.schedule_once(self.animate_tiles_in, .21)
         
@@ -102,7 +99,6 @@ class BoardScreen(Screen):
             instance.shake()            
             
     def move_tiles_outside(self, dt):
-        print("move outside")
         # record tiles position
         self.__tiles_x = dict([(f"{t.row}_{t.col}",t.x) for t in self.get_all_tile_widgets()])
         
@@ -122,9 +118,7 @@ class BoardScreen(Screen):
         self.add_tiles(self.game_engine.board.get_tiles_str())
         
         # available moves
-        bs = BoardSolver()
-        self.max_moves = bs.solve2(self.game_engine.board, self.game_engine.word)
-        #self.max_moves = self.game_engine.board.solve(self.game_engine.word)
+        self.max_moves = self.game_engine.max_moves
         self.available_moves = self.max_moves
         self.pro_moves.text = str(self.available_moves) 
         self.pro_moves.progress = 1
@@ -189,13 +183,6 @@ class BoardScreen(Screen):
         App.get_running_app().status = "challenge_completed"
         self.manager.current = "challenge_completed"  
 
-    """ def add_tiles(self):
-        self.gly_tiles.clear_widgets()
-        self.set_tiles_cols(self.game_engine.board.cols)
-        for r in range(self.game_engine.board.rows):
-            for c in range(self.game_engine.board.cols):
-                self.add_tile(self.game_engine.board.get_tile(r, c), r, c)   """
-
     def add_tiles(self, tiles):
         self.gly_tiles.clear_widgets()
         self.set_tiles_cols(self.game_engine.board.cols)
@@ -213,14 +200,10 @@ class BoardScreen(Screen):
 
     def set_level(self, level):
         self.level = level
-        #self.pro_level.text = str(level)
-        #self.pro_level.progress = level / self.game_engine.get_level_count()
 
     def set_challenge(self, challenge):
         self.challenge = challenge
         self.level_challenges = self.game_engine.CHALLENGES_BY_LEVEL
-        #self.pro_challenge.progress = ((challenge-1) / (self.game_engine.level_challenges if self.game_engine.level_challenges > 0 else 1))
-        #self.pro_challenge.text = str(challenge)
 
     def set_word(self, word):
         self.word = word
@@ -282,10 +265,5 @@ class BoardScreen(Screen):
             t.col = col
             t.game_engine = self.game_engine
             t.is_in_word = letter in self.game_engine.word
-            win_w = Window.size[0] - (dp(10) * 2)
-            #t.size_hint_y = None
-            #t.height = win_w / self.game_engine.board.rows
-            #t.bind(on_touch_down = self.tile_on_touch_up)
-            t.bind(on_release = self.tile_on_release)
-            
+            t.bind(on_release = self.tile_on_release)         
             self.gly_tiles.add_widget(t)

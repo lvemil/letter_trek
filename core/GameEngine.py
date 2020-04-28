@@ -48,6 +48,7 @@ class GameEngine:
         self.board.set_tiles(puzzle[0])
         
         self.word = puzzle[1] 
+        self.max_moves = puzzle[5]
         
         # fire on_board_changed event
         self.on_board_reset(self)

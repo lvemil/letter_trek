@@ -22,7 +22,6 @@ class ChallengeCompletedScreen(Screen):
         super(ChallengeCompletedScreen, self).__init__(**kwargs)
         self.on_enter = self.do_on_enter
         self.on_pre_enter = self.do_on_pre_enter
-        #self.btn_continue.bind(on_touch_up = self.btn_continue_on_touch_up)
 
     def btn_continue_on_touch_up(self, instance, touch):
         if instance.collide_point(*touch.pos):
