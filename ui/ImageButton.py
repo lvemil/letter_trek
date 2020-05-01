@@ -16,7 +16,6 @@ class ImageButton(ButtonBehavior, Image):
 
     def on_press(self):
         self.pressed = True
-        print('pressed')
 
     def on_release(self):
         self.pressed = False

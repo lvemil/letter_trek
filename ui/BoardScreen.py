@@ -65,6 +65,7 @@ class BoardScreen(Screen):
 
         # move tiles outside
         Clock.schedule_once(self.clear_all_tiles, .01)
+        # move tiles in
         Clock.schedule_once(self.animate_tiles_in, .21)
         
     def animate_tiles_in(self, *args):
@@ -216,7 +217,8 @@ class BoardScreen(Screen):
 
     def clear_all_tiles(self, *args):
         tiles = self.get_all_tile_widgets()
-        
+        self.__tiles_x = dict([(f"{t.row}_{t.col}",t.x) for t in tiles])
+
         s = Sequence(Clock)
 
         for tile in tiles:
