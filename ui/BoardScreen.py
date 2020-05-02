@@ -14,6 +14,7 @@ from kivy.core.audio import SoundLoader
 from ui.TileWidget import TileWidget
 from ui.ProgressWidget import ProgressWidget
 from ui.Sequence import Sequence
+from ui.SoundManager import SoundManager
 
 from core.GameEngine import GameEngine
 from core.BoardSolver import BoardSolver
@@ -85,14 +86,7 @@ class BoardScreen(Screen):
 
     def tile_on_release(self, instance): #, touch):
         if self.available_moves > 0 and self.game_engine.touch(instance.row, instance.col):
-            sound = SoundLoader.load('assets/click.wav')
-            if sound:
-                print("Sound found at %s" % sound.source)
-                print("Sound is %.3f seconds" % sound.length)
-                sound.volume = 1
-                sound.play()
-            else:   
-                print("no sound loaded")
+            SoundManager().play("move")
             
             # update available moves
             self.available_moves -= 1
@@ -102,6 +96,7 @@ class BoardScreen(Screen):
                 self.pro_moves.accent = True                   
                 self.pro_moves.blink()                   
         else:
+            SoundManager().play("invalid")
             instance.shake()            
             
     def move_tiles_outside(self, dt):
@@ -151,6 +146,7 @@ class BoardScreen(Screen):
     def on_tile_move_completed(self, animation, widget):
         if self.game_engine.check_challenge_completed():
             #self.__clock_event.cancel()
+            SoundManager().play("completed")
             self.game_engine.save()
             self.set_word("")
             self.clear_tiles()
