@@ -30,11 +30,11 @@
                 halign: 'center'
                 markup: True
                 size_hint: .5, .1
-                pos_hint: {"x":.25,"top":.75}
+                pos_hint: {"x":.25,"top":.80}
                 font_size: dp(60)
             ScrollView:
                 id: scv_levels
-                pos_hint: {"x":.05,"top":.5}
+                pos_hint: {"x":.05,"top":.45}
                 size_hint: 0.9, .15
                 do_scroll_y: False
                 do_scroll_x: True
@@ -47,7 +47,14 @@
                     width: self.minimum_width
                     spacing: dp(5),dp(5)
                     padding: dp(10)
- 
+            MyLabel:
+                text: "move tiles to build the word\nany direction matters"
+                halign: 'center'
+                markup: True
+                size_hint: .5, .1
+                pos_hint: {"x":.25,"top":.60}
+                font_size: dp(15)
+
 <ChallengeCompletedScreen>:
     btn_continue: btn_continue
     lbl_challenge_completed: lbl_challenge_completed

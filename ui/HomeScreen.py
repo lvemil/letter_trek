@@ -47,10 +47,7 @@ class HomeScreen(Screen):
         self.scv_levels.scroll_to(btn, padding = btn.width*1.25, animate = False )
 
     def btn_start_on_touch_up(self, instance, touch):
-        if instance.collide_point(*touch.pos):
-            #if instance.level < self.current_level:
-            #    self.game_engine.level = instance.level
-            #    self.game_engine.challenge = 0            
+        if instance.collide_point(*touch.pos):        
             self.manager.current = 'board'    
     
     

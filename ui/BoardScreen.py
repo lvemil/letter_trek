@@ -46,6 +46,11 @@ class BoardScreen(Screen):
         self.game_engine.on_tile_moved += self.on_tile_moved
 
     def btn_back_on_press(self, instance):
+        # stop pro_moves blinking
+        if self.available_moves == 0:
+            self.pro_moves.stop_blink()
+            self.pro_moves.accent = False
+            
         self.manager.current = "home" 
 
     def btn_restart_on_press(self, instance): #, touch):        
